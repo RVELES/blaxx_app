@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+
+# Xcode — build output / estado do usuário
+DerivedData/
+build/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM
+*.dSYM.zip
+
+# Swift Package Manager
+.swiftpm/
+.build/
+Packages/
+
+# Segredos — jamais commitar
+.env
+.env.*
+!.env.example
+*.p12
+*.cer
+*.mobileprovision
+*.key
+GoogleService-Info.plist
+secrets.json

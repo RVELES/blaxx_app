@@ -2,9 +2,39 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIBackgroundModes</key>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+	<!--
+	  Google Sign-In: custom URL scheme reverso do Client ID iOS.
+	  Client ID original: 105341431878-3msc2p3tjk3p5ro6i34d0b0qks3nf9dj.apps.googleusercontent.com
+	  Scheme reverso:     com.googleusercontent.apps.105341431878-3msc2p3tjk3p5ro6i34d0b0qks3nf9dj
+	-->
+	<key>CFBundleURLTypes</key>
 	<array>
-		<string>remote-notification</string>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.blaxx.BlaxxPontos.googleoauth</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.105341431878-3msc2p3tjk3p5ro6i34d0b0qks3nf9dj</string>
+			</array>
+		</dict>
+		<!--
+		  Esquema custom do app para deep links de recuperação de senha:
+		  blaxxpontos://redefinir-senha?token=…
+		  Capturado em BlaxxPontosApp.onOpenURL → ResetPasswordView.
+		-->
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.blaxx.BlaxxPontos.deeplink</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>blaxxpontos</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>

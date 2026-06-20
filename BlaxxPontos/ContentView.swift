@@ -2,79 +2,71 @@
 //  ContentView.swift
 //  BlaxxPontos
 //
-//  Created by Ricardo Veles on 23/05/26.
+//  View raiz. Roteia para tela de login OU para a shell adequada
+//  (Mobile no iPhone/iPad compact, Sidebar no macOS/iPad regular).
 //
 
 import SwiftUI
-import SwiftData
 
 struct ContentView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Environment(Session.self) private var session
+    /// Pré-login: mostra a Home pública (marketing) primeiro; ao tocar em
+    /// "Entrar"/"Criar conta" abre a LoginView (onde se credencia de fato).
+    @State private var showLogin = false
 
     var body: some View {
-        NavigationViewWrapper {
-            List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
-                }
-                .onDelete(perform: deleteItems)
-            }
-#if os(macOS)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-#endif
-            .toolbar {
-#if os(iOS)
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    EditButton()
-                }
-#endif
-                ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
-                    }
-                }
+        Group {
+            if session.isAuthenticated {
+                #if os(iOS)
+                MobileShell()
+                #else
+                AuthenticatedShell()
+                #endif
+            } else if showLogin {
+                LoginView(onBack: { showLogin = false })
+            } else {
+                HomeView(onEnter: { showLogin = true })
             }
         }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
-            }
-        }
+        .preferredColorScheme(.light)
     }
 }
 
-fileprivate struct NavigationViewWrapper<Content: View>: View {
-    let content: () -> Content
+#if os(macOS)
+struct AuthenticatedShell: View {
+    @Environment(Session.self) private var session
+    @State private var selection: Tab = .dashboard
 
     var body: some View {
-#if os(macOS)
-        NavigationSplitView {
-            content()
-        } detail: {
-            Text("Select an item")
+        HStack(spacing: 0) {
+            BlaxxSidebar(selection: $selection,
+                         userName: session.user?.name ?? "?",
+                         isAdmin: session.user?.isAdmin ?? false,
+                         onLogout: { session.logout() })
+
+            ZStack {
+                BlaxxColor.gray50.ignoresSafeArea()
+                switch selection {
+                case .dashboard:     DashboardView(selection: $selection)
+                case .wallet:        WalletView(selection: $selection)
+                case .card:          CardView()
+                case .statement:     StatementView()
+                case .buy:           BuyView()
+                case .send:          SendView()
+                case .redeem:        RedeemView()
+                case .partners:      PartnersView()
+                case .benefits:      BenefitsView()
+                case .notifications: NotificationsView()
+                case .profile:       ProfileView()
+                case .admin:         AdminView()
+                }
+            }
         }
-#else
-        content()
-#endif
+        .frame(minWidth: 1080, minHeight: 700)
     }
 }
+#endif
 
-#Preview {
-    ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+#Preview("Login") {
+    ContentView().environment(Session())
 }
