@@ -72,10 +72,24 @@ struct DashboardView: View {
                 }
                 .padding(isCompact ? 16 : 40)
             }
-            .background(BlaxxColor.appBg)
-            .navigationTitle(isCompact ? "Início" : "")
+            .background(BlaxxColor.paper)
+            .navigationTitle("")
             #if os(iOS)
-            .navigationBarTitleDisplayMode(.large)
+            .navigationBarTitleDisplayMode(isCompact ? .inline : .large)
+            .toolbar {
+                if isCompact {
+                    ToolbarItem(placement: .principal) {
+                        BlaxxWordmark(size: 20, tone: .light)
+                            .fixedSize()
+                    }
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button { selection = .profile } label: {
+                            Avatar(name: session.user?.name ?? "?", size: 30)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
             #endif
             .task(id: session.walletReloadTrigger) { await load() }
             .refreshable { await load() }
@@ -153,7 +167,7 @@ struct DashboardView: View {
     private var tierFg: Color { (card?.tier.text_color).flatMap { Color(blaxxHex: $0) } ?? .white }
 
     private var levelsCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 10) {
                 SectionHeader(title: "Níveis Blaxx", actionLabel: "Cartão →") { selection = .card }
                 VStack(alignment: .leading, spacing: 4) {
@@ -188,7 +202,7 @@ struct DashboardView: View {
     // MARK: Transferir (REAL)
 
     private var transferCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Transferir pontos").font(BlaxxFont.display(17)).foregroundStyle(BlaxxColor.black)
                 Text("Envie pontos a outro cliente Blaxx, sem taxa.")
@@ -230,7 +244,7 @@ struct DashboardView: View {
     // MARK: Marketplace (parceiros REAIS)
 
     private var marketplaceCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 10) {
                 SectionHeader(title: "Marketplace", actionLabel: "Ver tudo →") { selection = .partners }
                 if partners.isEmpty {
@@ -249,7 +263,7 @@ struct DashboardView: View {
     // MARK: Campanhas (programa)
 
     private var campaignsCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 12) {
                 SectionHeader(title: "Campanhas ativas", actionLabel: "Ver todas →") { selection = .partners }
                 TileRow(emoji: "🎯", title: "Dobro de pontos em viagens",
@@ -263,7 +277,7 @@ struct DashboardView: View {
     // MARK: Atividade (REAL)
 
     private var activityCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 12) {
                 SectionHeader(title: "Últimas movimentações", actionLabel: "Ver extrato →") { selection = .statement }
                 if transactions.isEmpty {
@@ -340,7 +354,7 @@ struct DashboardView: View {
     // MARK: Intelligence (showcase)
 
     private var intelligenceCard: some View {
-        BlaxxCard {
+        BlaxxCard(variant: .brutal) {
             VStack(alignment: .leading, spacing: 10) {
                 Text("Intelligence Center™").font(BlaxxFont.display(16)).foregroundStyle(BlaxxColor.black)
                 intelRow("S", "Melhor transferência hoje", "SMILES +80%", "Prazo: 48 horas")

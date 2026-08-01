@@ -40,6 +40,7 @@ struct SendView: View {
             }
             .background(BlaxxColor.appBg)
             .navigationTitle(isCompact ? "Enviar" : "")
+            .blaxxBrandNavBar()
         }
     }
 
@@ -122,8 +123,7 @@ struct SendView: View {
                         }
                     }
                     BlaxxField(label: "Senha", value: $password,
-                               placeholder: "••••••", isSecure: true,
-                               hint: "Demo: 123456")
+                               placeholder: "••••••", isSecure: true)
                     if let error {
                         Text(error).font(.system(size: 12)).foregroundStyle(BlaxxColor.negative)
                     }

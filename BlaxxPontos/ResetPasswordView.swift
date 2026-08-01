@@ -56,7 +56,7 @@ struct ResetPasswordView: View {
                                 Eyebrow(text: "Recuperação")
                                 Text("Crie uma nova senha")
                                     .font(BlaxxFont.display(22))
-                                Text("Escolha uma senha com pelo menos 6 caracteres. O link de recuperação é válido por 30 minutos e funciona uma única vez.")
+                                Text("Escolha uma senha com pelo menos 8 caracteres, contendo letras e números. O link de recuperação é válido por 30 minutos e funciona uma única vez.")
                                     .font(.system(size: 13))
                                     .foregroundStyle(BlaxxColor.gray600)
 
@@ -107,8 +107,14 @@ struct ResetPasswordView: View {
             error = "Código de recuperação ausente. Abra o link do e-mail ou cole o código."
             return
         }
-        guard password.count >= 6 else {
-            error = "A senha precisa ter pelo menos 6 caracteres."
+        guard password.count >= 8 else {
+            error = "A senha precisa ter pelo menos 8 caracteres."
+            return
+        }
+        let hasLetter = password.rangeOfCharacter(from: .letters) != nil
+        let hasDigit = password.rangeOfCharacter(from: .decimalDigits) != nil
+        guard hasLetter && hasDigit else {
+            error = "A senha precisa combinar letras e números."
             return
         }
         guard password == confirm else {
@@ -124,16 +130,7 @@ struct ResetPasswordView: View {
         } catch let e as APIError {
             // O backend devolve o código no campo `error`, que vira `message`.
             // Mapeia pra mensagens amigáveis (paridade com RedefinirSenha.tsx).
-            switch e.message {
-            case "token_expired":
-                error = "Este link expirou. Solicite um novo e-mail de recuperação."
-            case "token_used":
-                error = "Este link já foi utilizado. Solicite um novo e-mail de recuperação."
-            case "invalid_token":
-                error = "Código inválido. Confira o link do e-mail ou solicite um novo."
-            default:
-                error = e.message
-            }
+            error = e.message
         } catch {
             self.error = error.localizedDescription
         }

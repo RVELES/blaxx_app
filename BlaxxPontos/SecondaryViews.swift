@@ -561,6 +561,12 @@ struct ProfileView: View {
     @Environment(Session.self) private var session
     @State private var showingChangePassword = false
     @State private var showingEmailVerify = false
+    // Exclusão de conta (LGPD): confirmação + captura de senha + chamada API.
+    @State private var showingDeleteConfirm = false
+    @State private var showingDeletePassword = false
+    @State private var deletePassword = ""
+    @State private var deleteBusy = false
+    @State private var deleteError: String?
 
     var body: some View {
         CompactReader { isCompact in
@@ -603,7 +609,9 @@ struct ProfileView: View {
                                 Button("Termos e privacidade") {}
                                     .buttonStyle(GhostButtonStyle(fullWidth: true))
                                 Divider()
-                                Button("Excluir conta (LGPD)") {}
+                                Button("Excluir conta (LGPD)") {
+                                    showingDeleteConfirm = true
+                                }
                                     .buttonStyle(GhostButtonStyle(fullWidth: true))
                                     .tint(BlaxxColor.negative)
                             }
@@ -620,6 +628,82 @@ struct ProfileView: View {
             .sheet(isPresented: $showingEmailVerify) {
                 EmailVerifyView().environment(session)
             }
+            .confirmationDialog(
+                "Excluir conta?",
+                isPresented: $showingDeleteConfirm,
+                titleVisibility: .visible
+            ) {
+                Button("Continuar", role: .destructive) {
+                    deletePassword = ""
+                    deleteError = nil
+                    showingDeletePassword = true
+                }
+                Button("Cancelar", role: .cancel) {}
+            } message: {
+                Text("Tem certeza? Esta ação é irreversível. Seus pontos, histórico e dados pessoais serão removidos.")
+            }
+            .sheet(isPresented: $showingDeletePassword) {
+                deletePasswordSheet
+            }
+        }
+    }
+
+    private var deletePasswordSheet: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    Text("Confirme sua senha")
+                        .font(BlaxxFont.display(22, weight: .bold))
+                    Text("Para excluir sua conta, digite sua senha atual.")
+                        .foregroundStyle(BlaxxColor.gray600)
+                        .font(.system(size: 14))
+                    BlaxxField(label: "Senha", value: $deletePassword,
+                               placeholder: "••••••••",
+                               isSecure: true)
+                    if let deleteError {
+                        Text(deleteError)
+                            .font(.system(size: 13))
+                            .foregroundStyle(BlaxxColor.negative)
+                    }
+                    Button(deleteBusy ? "Excluindo…" : "Excluir conta agora") {
+                        Task { await performDelete() }
+                    }
+                    .buttonStyle(DarkButtonStyle(fullWidth: true))
+                    .tint(BlaxxColor.negative)
+                    .disabled(deleteBusy || deletePassword.isEmpty)
+                    Button("Cancelar") {
+                        showingDeletePassword = false
+                    }
+                    .buttonStyle(GhostButtonStyle(fullWidth: true))
+                    .disabled(deleteBusy)
+                }
+                .padding(24)
+            }
+            .navigationTitle("Excluir conta")
+        }
+    }
+
+    private func performDelete() async {
+        deleteBusy = true; deleteError = nil
+        defer { deleteBusy = false }
+        do {
+            try await BlaxxAPI.shared.deleteAccount(password: deletePassword)
+            // Limpa estado local e desloga.
+            TokenStore.clear()
+            TokenStore.clearProfile()
+            // Remove preferências (best-effort): a chave de override do backend
+            // só existe em DEBUG, mas removemos sempre para garantir um estado
+            // limpo após exclusão.
+            UserDefaults.standard.removeObject(forKey: "blaxx_backend_url")
+            await MainActor.run {
+                session.user = nil
+                showingDeletePassword = false
+                showingDeleteConfirm = false
+            }
+        } catch let e as APIError {
+            deleteError = e.message
+        } catch {
+            deleteError = "Não foi possível excluir a conta agora."
         }
     }
 

@@ -2,7 +2,8 @@
 //  API.swift
 //  BlaxxPontos
 //
-//  Cliente HTTP para o backend Flask em 127.0.0.1:5050.
+//  Cliente HTTP para o backend Blaxx (produção: Render.com). Em DEBUG
+//  o endereço pode ser sobrescrito para o Flask local.
 //
 
 import Foundation
@@ -111,7 +112,7 @@ struct VoucherDTO: Decodable, Identifiable {
     let created_at: String
 }
 
-struct WalletDTO: Decodable {
+struct WalletDTO: Codable {
     let id: String
     let user_id: String
     let balance_pts: Int
@@ -286,9 +287,16 @@ actor BlaxxAPI {
     }
 
     private var baseURL: URL {
+        #if DEBUG
+        // Só em build de desenvolvimento o endereço pode ser sobrescrito via
+        // UserDefaults("blaxx_backend_url") para apontar ao Flask local. Em
+        // release o override é ignorado e o app sempre fala com produção.
         let s = UserDefaults.standard.string(forKey: "blaxx_backend_url")
             ?? BlaxxAPI.defaultBaseURL
         return URL(string: s) ?? URL(string: BlaxxAPI.defaultBaseURL)!
+        #else
+        return URL(string: BlaxxAPI.defaultBaseURL)!
+        #endif
     }
 
     private var token: String? {
@@ -335,7 +343,7 @@ actor BlaxxAPI {
         while true {
             attempt += 1
             do {
-                (data, response) = try await URLSession.shared.data(for: req)
+                (data, response) = try await SSLPinning.session.data(for: req)
             } catch let urlErr as URLError {
                 // .cancelled = -999 é normal quando a View é dismissed antes
                 // da request terminar (SwiftUI cancela a Task automaticamente).
@@ -418,7 +426,7 @@ actor BlaxxAPI {
         req.cachePolicy = .reloadIgnoringLocalCacheData
         for attempt in 1...4 {
             do {
-                let (_, resp) = try await URLSession.shared.data(for: req)
+                let (_, resp) = try await SSLPinning.session.data(for: req)
                 if let http = resp as? HTTPURLResponse, http.statusCode == 200 { return }
             } catch is CancellationError {
                 return
@@ -502,6 +510,21 @@ actor BlaxxAPI {
                               body: body, as: OKResponse.self)
     }
 
+    /// Exclui a conta do usuário (LGPD). Exige senha atual para confirmar.
+    /// O backend deve revogar tokens e marcar/remover o registro do usuário.
+    /// Cai de volta para POST /account/delete se DELETE /account não estiver
+    /// disponível no backend (compat).
+    func deleteAccount(password: String) async throws {
+        let body = try JSONEncoder().encode(["password": password])
+        do {
+            _ = try await request(path: "/account", method: "DELETE",
+                                  body: body, as: OKResponse.self)
+        } catch let e as APIError where e.status == 404 || e.status == 405 {
+            _ = try await request(path: "/account/delete", method: "POST",
+                                  body: body, as: OKResponse.self)
+        }
+    }
+
     /// Resposta de /auth/verify-email/send.
     ///
     /// Quando o backend roda com `MAILER=console` (modo dev — Render free tier
@@ -534,6 +557,26 @@ actor BlaxxAPI {
         let body = try JSONEncoder().encode(["code": code])
         return try await request(path: "/auth/verify-email", method: "POST",
                                   body: body, as: OKResponse.self)
+    }
+
+    /// Homologação: auto-verifica o e-mail sem código (só funciona com MAILER!=resend).
+    func devVerifyEmail() async throws -> OKResponse {
+        return try await request(path: "/auth/dev/verify-email", method: "POST",
+                                  body: Data("{}".utf8), as: OKResponse.self)
+    }
+
+    // MARK: Push devices
+
+    /// Registra o device token APNs no backend pra receber push notifications.
+    /// Endpoint pode não existir ainda — PushService trata 404/405 como abort.
+    /// Body: {"token": "<hex>", "platform": "ios"}.
+    func registerDevice(token: String) async throws {
+        struct DeviceBody: Encodable { let token: String; let platform: String }
+        struct OK: Decodable { let ok: Bool? }
+        let body = try JSONEncoder().encode(DeviceBody(token: token, platform: "ios"))
+        // Backend route: blueprint push_bp tem url_prefix="/push" → /push/devices/register
+        _ = try await request(path: "/push/devices/register", method: "POST",
+                              body: body, as: OK.self)
     }
 
     // MARK: Notifications
@@ -637,7 +680,7 @@ actor BlaxxAPI {
         req.httpMethod = "GET"
         if let token { req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
         req.timeoutInterval = 30
-        let (data, response) = try await URLSession.shared.data(for: req)
+        let (data, response) = try await SSLPinning.session.data(for: req)
         guard let http = response as? HTTPURLResponse else {
             throw APIError(status: 0, message: "Resposta inválida do servidor")
         }
@@ -655,7 +698,7 @@ actor BlaxxAPI {
         // O backend devolve um dict {key: {label, points, price_brl}} — convertemos para array.
         var req = URLRequest(url: makeURL(path: "/pix/packages"))
         if let token { req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization") }
-        let (data, _) = try await URLSession.shared.data(for: req)
+        let (data, _) = try await SSLPinning.session.data(for: req)
         guard let dict = try JSONSerialization.jsonObject(with: data) as? [String: [String: Any]] else {
             return []
         }

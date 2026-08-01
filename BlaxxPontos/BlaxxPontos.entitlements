@@ -8,5 +8,28 @@
 	<true/>
 	<key>com.apple.security.files.user-selected.read-only</key>
 	<true/>
+	<!--
+	  APNs environment — TEMPORARIAMENTE REMOVIDO (2026-06-30) para permitir
+	  build com team individual antes do App ID ter Push Notifications
+	  habilitado no Developer Portal.
+
+	  Para restaurar (precisa ANTES habilitar Push em
+	  https://developer.apple.com/account/resources/identifiers/list →
+	  Blaxx-Pontos-Inc.BlaxxPontos → Capabilities → Push Notifications):
+
+	    <key>aps-environment</key>
+	    <string>development</string>     <!-- TestFlight + Debug -->
+	    <!-- ou <string>production</string> para builds Release publicadas -->
+
+	  Sem aps-environment, registerForRemoteNotifications() retorna erro
+	  silencioso; o PushService já tolera isso (best-effort).
+	-->
+
+	<!--
+	  Apple Wallet: necessário para adicionar passes (.pkpass) gerados
+	  pelo backend. O Wallet em si funciona em produção via PassKit do
+	  sistema; este entitlement só é exigido para passes assinados pelo
+	  próprio app (não é nosso caso — usamos servidor).
+	-->
 </dict>
 </plist>

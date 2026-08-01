@@ -1,0 +1,57 @@
+default_platform(:ios)
+
+# Fastfile mínimo para o pipeline BlaXx Pontos.
+# Pré-requisitos:
+#   - gem install fastlane
+#   - rodar `fastlane init` na primeira vez (pra preencher Appfile)
+#   - autenticar com `xcrun altool` ou App Store Connect API Key
+#
+# Lanes disponíveis:
+#   - beta:        build + upload TestFlight (auto-incrementa build number)
+#   - build_only:  só compila assinado (smoke test sem upload)
+#
+# Variáveis de ambiente esperadas (export antes de rodar):
+#   APP_STORE_CONNECT_API_KEY_PATH  - JSON da API key (ou usar Apple ID + senha)
+#   FASTLANE_APPLE_APPLICATION_SPECIFIC_PASSWORD  - app-specific password
+#   MATCH_PASSWORD  - se usar `match` para certs (recomendado em CI)
+
+platform :ios do
+  before_all do
+    ensure_git_status_clean(show_uncommitted_changes: true) unless ENV["SKIP_GIT_CHECK"]
+  end
+
+  desc "Build assinado para App Store (sem upload). Útil pra validar antes do beta."
+  lane :build_only do
+    increment_build_number(xcodeproj: "BlaxxPontos.xcodeproj")
+    build_ios_app(
+      scheme: "BlaxxPontos",
+      export_method: "app-store",
+      output_directory: "./build",
+      clean: true
+    )
+  end
+
+  desc "Build e upload para o TestFlight."
+  lane :beta do
+    increment_build_number(xcodeproj: "BlaxxPontos.xcodeproj")
+    build_ios_app(
+      scheme: "BlaxxPontos",
+      export_method: "app-store",
+      output_directory: "./build",
+      clean: true
+    )
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      skip_submission: true
+    )
+  end
+
+  desc "Upload metadados (pt-BR) sem build novo."
+  lane :metadata do
+    upload_to_app_store(
+      skip_binary_upload: true,
+      skip_screenshots: true,
+      force: true
+    )
+  end
+end

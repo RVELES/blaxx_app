@@ -2,8 +2,11 @@
 
 App SwiftUI nativo para macOS, com backend Flask local e cache em SwiftData.
 Implementa o fluxograma completo do Blaxx Pontos com o design system oficial
-do PDF: paleta preto absoluto / verde-limão `#7CFF00` / cinzas, tipografia
+do PDF: paleta preto absoluto / verde neon `#59FD27` / cinzas, tipografia
 Playfair Display + SF Pro.
+
+> ✅ **Verde de marca oficial é o neon `#59FD27`** (adotado 27/06/2026).
+> `Theme.swift` e este README já usam o neon oficial; o lime `#7CFF00` é legado.
 
 ## Como rodar
 
@@ -159,7 +162,7 @@ Cores extraídas da seção 11.2 do PDF de projeto e definidas em `Theme.swift`:
 | ------------------ | -------- |
 | Preto absoluto     | `#0A0A0A`|
 | Preto suavizado    | `#1A1A1A`|
-| Verde-limão Blaxx  | `#7CFF00`|
+| Verde neon Blaxx   | `#59FD27`|
 | Verde-limão escuro | `#5AB800`|
 | Verde-limão claro  | `#F0FAD9`|
 | Cinza 50–800       | …        |

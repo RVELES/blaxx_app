@@ -15,6 +15,11 @@ struct BlaxxPontosApp: App {
     // apresenta a ResetPasswordView por cima de qualquer tela.
     @State private var resetToken: String?
 
+    // App delegate pra receber callbacks de APNs (deviceToken / didFail).
+    #if os(iOS)
+    @UIApplicationDelegateAdaptor(BlaxxAppDelegate.self) private var appDelegate
+    #endif
+
     let modelContainer: ModelContainer = {
         let schema = Schema([CachedWallet.self, CachedTransaction.self])
         let config = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
@@ -43,6 +48,19 @@ struct BlaxxPontosApp: App {
                 .onOpenURL { url in
                     handleDeepLink(url)
                 }
+                #if os(iOS)
+                .task {
+                    // Pede permissão e registra para push. Idempotente — em
+                    // próximas execuções o sistema lembra a escolha do usuário.
+                    await PushService.shared.requestAuthorizationAndRegister()
+                }
+                #endif
+                // Cobre toda a árvore de views com overlay opaco quando o app
+                // sai de .active — protege o snapshot do App Switcher contra
+                // exposição de saldo, PIX, histórico financeiro etc.
+                #if os(iOS)
+                .protectedSnapshot()
+                #endif
         }
         .modelContainer(modelContainer)
         #if os(macOS)

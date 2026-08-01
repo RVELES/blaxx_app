@@ -38,6 +38,7 @@ struct RedeemView: View {
             }
             .background(BlaxxColor.appBg)
             .navigationTitle(isCompact ? "Resgatar" : "")
+            .blaxxBrandNavBar()
         }
     }
 
@@ -113,11 +114,9 @@ struct RedeemView: View {
 
                     BlaxxField(label: "Chave PIX (e-mail, CPF, telefone, aleatória)",
                                value: $pixKey,
-                               placeholder: "seu@email.com",
-                               hint: "Dica: chaves com prefixo 'fail-' simulam falha (estorno automático)")
+                               placeholder: "seu@email.com")
                     BlaxxField(label: "Senha", value: $password,
-                               placeholder: "••••••", isSecure: true,
-                               hint: "Demo: 123456")
+                               placeholder: "••••••", isSecure: true)
 
                     if let quote {
                         BlaxxCard(variant: .lime) {
@@ -153,6 +152,15 @@ struct RedeemView: View {
                 Text("Payout falhou")
                     .font(BlaxxFont.display(28))
                 Text("Os pontos foram devolvidos à sua carteira (REFUND).")
+                    .foregroundStyle(BlaxxColor.gray600)
+            } else if result?.status == "processing" {
+                // PAYOUT_MODE=manual (produção sem provider de payout real):
+                // débito retido, PIX sai em até 1 dia útil. Sem "PIX enviado!".
+                SuccessTick(color: BlaxxColor.warning, icon: "clock")
+                Eyebrow(text: "Em processamento")
+                Text("Resgate em processamento")
+                    .font(BlaxxFont.display(28))
+                Text("Seu PIX será transferido em até 1 dia útil. Acompanhe no extrato.")
                     .foregroundStyle(BlaxxColor.gray600)
             } else {
                 SuccessTick()

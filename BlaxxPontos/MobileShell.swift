@@ -127,7 +127,9 @@ struct MobileMoreView: View {
                     } label: { row(icon: "bell.fill", title: "Notificações", subtitle: "Histórico de avisos") }
                 }
 
-                // Admin: aparece só se o usuário é admin
+                // Admin: aparece só se o usuário é admin — e só em DEBUG.
+                // Em release o painel admin não é exposto no app móvel.
+                #if DEBUG
                 if session.user?.isAdmin ?? false {
                     Section {
                         NavigationLink {
@@ -137,6 +139,7 @@ struct MobileMoreView: View {
                                        subtitle: "Painel restrito · usuários e movimentações") }
                     }
                 }
+                #endif
 
                 Section {
                     NavigationLink {
@@ -158,6 +161,7 @@ struct MobileMoreView: View {
         }
         .background(BlaxxColor.gray50.ignoresSafeArea())
         .navigationTitle("Mais")
+        .blaxxBrandNavBar()
     }
 
     private func row(icon: String, title: String, subtitle: String,

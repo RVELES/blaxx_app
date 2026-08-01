@@ -53,14 +53,13 @@ struct RegisterView: View {
                                 .textInputAutocapitalization(.never)
                                 #endif
                             BlaxxField(label: "CPF (só números)", value: $cpf,
-                                       placeholder: "00000000000",
-                                       hint: "Demo CPFs válidos: 52998224725, 11144477735")
+                                       placeholder: "00000000000")
                                 #if os(iOS)
                                 .keyboardType(.numberPad)
                                 #endif
                             BlaxxField(label: "Chave PIX (opcional)", value: $pixKey,
                                        placeholder: "e-mail, telefone, CPF ou chave aleatória")
-                            BlaxxField(label: "Senha (mín. 6 caracteres)",
+                            BlaxxField(label: "Senha (mín. 7 caracteres)",
                                        value: $password,
                                        placeholder: "••••••",
                                        isSecure: true)

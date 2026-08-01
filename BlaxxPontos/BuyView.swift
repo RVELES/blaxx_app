@@ -75,6 +75,7 @@ struct BuyView: View {
             }
             .background(BlaxxColor.appBg)
             .navigationTitle(isCompact ? "Comprar" : "")
+            .blaxxBrandNavBar()
             .task { await loadPackages() }
             .sheet(isPresented: $showEmailVerifySheet, onDismiss: {
                 // Ao fechar a sheet, se o usuário verificou o email
@@ -256,6 +257,7 @@ struct BuyView: View {
                     summaryRow("Valor", formatBRL(charge.amount_brl))
                     summaryRow("Pontos", "\(formatPts(charge.points_to_credit)) pts")
                     summaryRow("Expira em", "30 minutos")
+                    #if DEBUG
                     if isMockProvider {
                         Button("Simular pagamento (demo)") {
                             Task { await simulate(charge: charge) }
@@ -268,6 +270,13 @@ struct BuyView: View {
                             .foregroundStyle(BlaxxColor.gray600)
                             .padding(.top, 6)
                     }
+                    #else
+                    // Release: nunca mostra o atalho de simular pagamento.
+                    Text("Aguardando pagamento real…")
+                        .font(.system(size: 13))
+                        .foregroundStyle(BlaxxColor.gray600)
+                        .padding(.top, 6)
+                    #endif
                 }
             }
         }

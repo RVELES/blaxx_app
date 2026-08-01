@@ -27,13 +27,17 @@ struct BlaxxCard<Content: View>: View {
     var variant: Variant = .surface
     @ViewBuilder var content: () -> Content
 
-    enum Variant { case surface, dark, lime }
+    // `.brutal*` = tema claro Neo-Brutal (borda grossa + sombra dura). Opt-in:
+    // as chamadas existentes continuam em `.surface` (macio) e nada muda nelas.
+    enum Variant { case surface, dark, lime, brutal, brutalNeon }
 
     private var background: Color {
         switch variant {
-        case .surface: BlaxxColor.white
-        case .dark:    BlaxxColor.black
-        case .lime:    BlaxxColor.limeLight
+        case .surface:    BlaxxColor.white
+        case .dark:       BlaxxColor.black
+        case .lime:       BlaxxColor.limeLight
+        case .brutal:     BlaxxColor.white
+        case .brutalNeon: BlaxxColor.lime
         }
     }
     private var border: Color {
@@ -41,20 +45,27 @@ struct BlaxxCard<Content: View>: View {
         case .surface: BlaxxColor.border
         case .dark:    .clear
         case .lime:    BlaxxColor.limeDark.opacity(0.4)
+        case .brutal, .brutalNeon: BlaxxColor.ink
         }
     }
+    private var isBrutal: Bool { variant == .brutal || variant == .brutalNeon }
+
     var body: some View {
-        content()
-            .padding(20)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(background)
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(border, lineWidth: 0.5)
-            )
+        if isBrutal {
+            content().brutalCard(background: background)
+        } else {
+            content()
+                .padding(20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(background)
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(border, lineWidth: 0.5)
+                )
+        }
     }
 }
 
@@ -397,11 +408,12 @@ struct Topbar: View {
 
 struct Avatar: View {
     let name: String
+    var size: CGFloat = 40
     var body: some View {
         Text(String(name.prefix(1)).uppercased())
-            .font(.system(size: 14, weight: .semibold))
+            .font(.system(size: size * 0.35, weight: .semibold))
             .foregroundStyle(BlaxxColor.lime)
-            .frame(width: 40, height: 40)
+            .frame(width: size, height: size)
             .background(Circle().fill(BlaxxColor.black))
     }
 }
@@ -419,3 +431,34 @@ struct SuccessTick: View {
             .background(Circle().fill(color))
     }
 }
+
+// MARK: - Marca na nav bar (iPhone)
+
+extension View {
+    /// Centraliza o wordmark BlaXx na nav bar — igual à aba "Início". Antes só o
+    /// Dashboard tinha o logo e as demais abas mostravam só um título de texto,
+    /// dando a sensação de que a marca "sumia". No macOS é no-op: lá a marca
+    /// vive no hero da sidebar.
+    func blaxxBrandNavBar() -> some View {
+        modifier(BrandNavBarModifier())
+    }
+}
+
+#if os(iOS)
+private struct BrandNavBarModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    BlaxxWordmark(size: 20, tone: .light)
+                        .fixedSize()
+                }
+            }
+    }
+}
+#else
+private struct BrandNavBarModifier: ViewModifier {
+    func body(content: Content) -> some View { content }
+}
+#endif

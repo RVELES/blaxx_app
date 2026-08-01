@@ -1,0 +1,9 @@
+Primeira versão do BlaXx Pontos.
+
+• Carteira de pontos com saldo em tempo real
+• Compra de pontos via PIX com confirmação automática
+• Resgate por PIX para a sua chave cadastrada
+• Envio de pontos entre membros BlaXx
+• Cartão BlaXx com níveis e suporte à Apple Wallet
+• Parceiros e benefícios
+• Login com Face ID, SSL pinning e proteção do App Switcher

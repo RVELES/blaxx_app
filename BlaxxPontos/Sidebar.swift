@@ -56,11 +56,19 @@ struct BlaxxSidebar: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            // Logo oficial Blaxx (XX duplo) — variante dark-ink sobre a
-            // sidebar clara (paridade com web/Windows/SVG da marca).
-            BlaxxWordmark(size: 30, tone: .dark)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.bottom, 32)
+            // Hero da marca: card ESCURO com o lockup vertical oficial. Sobre o
+            // branco da sidebar o símbolo neon sumia ("não dá pra ver o logo");
+            // no card escuro ele salta. Como a sidebar é fixa, a marca passa a
+            // aparecer com presença em TODAS as telas — não só na home.
+            BlaxxLockup(symbolSize: 50, fontSize: 22, tone: .light)
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 22)
+                .background(
+                    RoundedRectangle(cornerRadius: 18)
+                        .fill(LinearGradient(colors: [BlaxxColor.black, BlaxxColor.blackSoft],
+                                             startPoint: .top, endPoint: .bottom))
+                )
+                .padding(.bottom, 28)
 
             sectionLabel("Programa")
             ForEach(programTabs, id: \.self) { tab in
@@ -69,12 +77,15 @@ struct BlaxxSidebar: View {
                 }
             }
 
+            #if DEBUG
+            // Em release o atalho Admin não é exposto na sidebar.
             if isAdmin {
                 sectionLabel("Admin").padding(.top, 16)
                 NavItem(tab: .admin, isActive: selection == .admin) {
                     selection = .admin
                 }
             }
+            #endif
 
             sectionLabel("Conta").padding(.top, 16)
             NavItem(tab: .profile, isActive: selection == .profile) {

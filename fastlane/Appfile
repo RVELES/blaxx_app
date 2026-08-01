@@ -1,0 +1,7 @@
+# Appfile — preencher após criar o registro no App Store Connect.
+# Pode usar variáveis de ambiente para evitar commitar dados sensíveis.
+
+app_identifier(ENV["APP_IDENTIFIER"] || "Blaxx-Pontos-Inc.BlaxxPontos")
+apple_id(ENV["FASTLANE_APPLE_ID"])             # email da conta Apple Developer
+team_id(ENV["FASTLANE_TEAM_ID"])               # Team ID Developer Program
+itc_team_id(ENV["FASTLANE_ITC_TEAM_ID"])       # App Store Connect Team ID (numérico)

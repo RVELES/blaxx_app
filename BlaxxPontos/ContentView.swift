@@ -15,6 +15,15 @@ struct ContentView: View {
     @State private var showLogin = false
 
     var body: some View {
+        // Entry swapped to the new native "BlaXx Rewards" experience. RewardsRoot
+        // is the mock login gate → RewardsShell. Reversible: use `RewardsShell()`
+        // to skip the gate, or restore `legacyBody` to bring back the old app.
+        RewardsRoot()
+            .preferredColorScheme(.light)
+    }
+
+    /// Original root routing — preserved for a one-line revert.
+    private var legacyBody: some View {
         Group {
             if session.isAuthenticated {
                 #if os(iOS)
@@ -58,7 +67,13 @@ struct AuthenticatedShell: View {
                 case .benefits:      BenefitsView()
                 case .notifications: NotificationsView()
                 case .profile:       ProfileView()
-                case .admin:         AdminView()
+                case .admin:
+                    #if DEBUG
+                    AdminView()
+                    #else
+                    // Release: rota admin não exposta no app.
+                    Text("Indisponível")
+                    #endif
                 }
             }
         }

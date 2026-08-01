@@ -25,5 +25,23 @@ Packages/
 *.cer
 *.mobileprovision
 *.key
+*.p8
 GoogleService-Info.plist
 secrets.json
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/screenshots/**/*.jpg
+fastlane/test_output
+fastlane/*.lock
+fastlane/Deliverfile.local
+fastlane/Matchfile.local
+
+# App Store Connect API Keys (.p8) — não commitar
+AuthKey_*.p8
+
+# Backup dos ícones originais (pré-neon) — não versionar
+BlaxxPontos/Assets.xcassets/AppIcon.appiconset/.bak_orig/
+*.bak

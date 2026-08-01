@@ -9,8 +9,8 @@ struct LoginView: View {
     @Environment(Session.self) private var session
     /// Opcional: volta para a Home pública. Quando nil, não mostra o botão.
     var onBack: (() -> Void)? = nil
-    @State private var emailOrCPF: String = "mariana@blaxx.com"
-    @State private var password: String = "123456"
+    @State private var emailOrCPF: String = ""
+    @State private var password: String = ""
     @State private var showingRegister = false
     @State private var showingForgotPassword = false
 
@@ -152,11 +152,10 @@ struct LoginView: View {
                     .padding(.bottom, 4)
 
                 BlaxxField(label: "E-mail ou CPF", value: $emailOrCPF,
-                           placeholder: "mariana@blaxx.com")
+                           placeholder: "voce@email.com")
                 BlaxxField(label: "Senha", value: $password,
                            placeholder: "••••••",
-                           isSecure: true,
-                           hint: "Demo: 123456")
+                           isSecure: true)
 
                 if let err = session.lastError {
                     Text(err)

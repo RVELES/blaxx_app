@@ -155,6 +155,7 @@ final class Session {
         Task { try? await BlaxxAPI.shared.logout() }
         TokenStore.clear()
         TokenStore.clearProfile()
+        WalletCache.clear()
         user = nil
     }
 
