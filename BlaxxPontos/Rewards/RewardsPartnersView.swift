@@ -80,7 +80,7 @@ struct RewardsPartnersView: View {
         }
         .padding(.init(top: 13, leading: 14, bottom: 13, trailing: 14))
         .background(.white)
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .rwCardShadow()
     }
 }

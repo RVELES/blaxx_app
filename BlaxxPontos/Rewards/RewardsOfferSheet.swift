@@ -60,7 +60,7 @@ struct RewardsOfferSheet: View {
                     .foregroundStyle(RWColor.countdownFg)
                     .padding(.horizontal, 13).padding(.vertical, 7)
                     .background(RWColor.countdownBg)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
                     .padding(.top, 14)
                 }
                 .padding(.vertical, 6)
@@ -95,7 +95,7 @@ struct RewardsOfferSheet: View {
                 }
                 .padding(16)
                 .background(RWColor.simBg)
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .padding(.bottom, 8)
 
                 Text("Bônus de \(p.bonus)% aplicado sobre o total transferido. Mínimo de 10.000 pontos por transferência. Pontos creditados em até 24h. Sujeito aos termos do programa parceiro.")

@@ -63,18 +63,14 @@ struct RewardsLoginView: View {
     private var lockup: some View {
         VStack(spacing: 16) {
             VStack(spacing: 12) {
-                Image("BlaxxSymbol")
-                    .renderingMode(.template)
+                // Marca oficial (arte vetorial). Antes eram três elementos —
+                // símbolo + wordmark em Text + "REWARDS" em Text —, e o
+                // wordmark mudava de forma conforme a fonte disponível.
+                // BlaxxLockup já é esse lockup completo, na proporção certa.
+                Image("BlaxxLockup")
                     .resizable().scaledToFit()
-                    .foregroundStyle(RWColor.neon)       // neon symbol pops on dark
-                    .frame(width: 46, height: 50)
-                (Text("Bla").foregroundColor(.white)
-                 + Text("Xx").foregroundColor(RWColor.neon))      // on dark: Bla white + Xx neon
-                    .font(BlaxxFont.display(36, weight: .bold))
-                Text("REWARDS")
-                    .font(.system(size: 11, weight: .semibold))
-                    .tracking(4.5)
-                    .foregroundStyle(RWColor.muted)
+                    .frame(height: 118)
+                    .accessibilityLabel("BlaXx Rewards")
             }
             Text("Troque seus pontos. Multiplique vantagens.")
                 .font(.system(size: 14, weight: .medium))
@@ -119,9 +115,9 @@ struct RewardsLoginView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 16)
         .background(Color.white.opacity(0.06))
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 14, style: .continuous)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(focus == field ? RWColor.neon.opacity(0.7) : Color.white.opacity(0.10),
                         lineWidth: 1.5)
         )

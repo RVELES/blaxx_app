@@ -152,6 +152,13 @@ final class RewardsBackend {
         try await BlaxxAPI.shared.getCharge(id: id)
     }
 
+    /// Qual gateway de PIX o backend está usando e se ele é o mock.
+    /// A afordância de "Simular pagamento" depende disto: `simulate-payment`
+    /// só existe com provider mock **e** fora de produção (`api/pix.py:311-330`).
+    func providerInfo() async throws -> PixProviderInfo {
+        try await BlaxxAPI.shared.providerInfo()
+    }
+
     /// Homologação: confirms the PIX charge without a real bank transfer.
     func simulatePayment(chargeId: String) async throws {
         try await BlaxxAPI.shared.simulatePayment(chargeId: chargeId)
@@ -182,6 +189,78 @@ final class RewardsBackend {
         #else
         throw APIError(status: -1, message: "Operação indisponível nesta build.")
         #endif
+    }
+
+    // ----- Área logada: paridade com o menu do PWA ------------------------ //
+    //
+    // Os itens abaixo cobrem `MENU_LOGADO` de `blaxx/assets/blaxx-nav.js`
+    // (Conta · Pontos · Descobrir · Ajuda), menos a troca entre programas.
+    // Todos são passthrough: quem chama trata `APIError`.
+
+    /// Extrato (`extrato.html`).
+    func transactions(limit: Int = 50) async throws -> [TransactionDTO] {
+        try await BlaxxAPI.shared.transactions(limit: limit)
+    }
+
+    /// Cartão BlaXx: nível, progresso e catálogo de níveis (`cartao.html`).
+    func card() async throws -> CardStateDTO {
+        try await BlaxxAPI.shared.card()
+    }
+
+    /// Notificações (`central-notificacoes.html`).
+    func notifications() async throws -> [NotificationDTO] {
+        try await BlaxxAPI.shared.notifications().items
+    }
+
+    func markNotificationRead(_ id: String) async throws {
+        try await BlaxxAPI.shared.markNotificationRead(id)
+    }
+
+    func markAllNotificationsRead() async throws {
+        try await BlaxxAPI.shared.markAllNotificationsRead()
+    }
+
+    /// Campanhas (`campanhas.html`).
+    func campaigns() async throws -> [CampaignDTO] {
+        try await BlaxxAPI.shared.campaigns()
+    }
+
+    func joinCampaign(_ id: String) async throws {
+        try await BlaxxAPI.shared.joinCampaign(id)
+    }
+
+    /// Catálogo de resgate com pontos e vouchers do usuário (`resgates.html`).
+    func benefits() async throws -> [BenefitDTO] {
+        try await BlaxxAPI.shared.benefits()
+    }
+
+    func vouchers() async throws -> [VoucherDTO] {
+        try await BlaxxAPI.shared.myVouchers()
+    }
+
+    func redeemBenefit(_ id: String) async throws -> VoucherDTO {
+        try await BlaxxAPI.shared.redeemBenefit(id)
+    }
+
+    /// Troca de senha (`seguranca.html`).
+    func changePassword(current: String, new: String) async throws {
+        try await BlaxxAPI.shared.changePassword(oldPassword: current, newPassword: new)
+    }
+
+    /// Exclusão de conta (`excluir-conta.html`). Irreversível no backend.
+    func deleteAccount(password: String) async throws {
+        try await BlaxxAPI.shared.deleteAccount(password: password)
+        signOut()
+    }
+
+    /// Encerra a sessão local. Não derruba a experiência: o shell volta ao
+    /// gate de login e os dados reais somem da tela.
+    func signOut() {
+        TokenStore.clear()
+        user = nil
+        wallet = nil
+        emailVerified = false
+        ready = false
     }
 
     #if DEBUG

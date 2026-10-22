@@ -8,12 +8,21 @@
 import SwiftUI
 
 struct RewardsHomeView: View {
-    @Environment(RewardsStore.self) private var store
+    @Environment(RewardsBackend.self) private var backend
     var onTrade: () -> Void
     var onBuy: () -> Void
     var onSell: () -> Void
     var onTransfer: () -> Void
-    var onOffer: (String) -> Void
+    var onBell: () -> Void
+    var onAvatar: () -> Void
+    var onCampaigns: () -> Void
+
+    /// Campanhas reais do backend. Substituem a régua de "+120% de bônus" em
+    /// programas de milhas, que era mock hardcoded ao lado de botões que
+    /// operam contra o backend de verdade — o mesmo defeito que o PWA corrigiu
+    /// na área logada em 02/08 (`Q05`).
+    @State private var campaigns: [CampaignDTO] = []
+    @State private var loadingCampaigns = true
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -22,20 +31,27 @@ struct RewardsHomeView: View {
                 hero
                 quickActions
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Destaques para você")
+                    Text("Campanhas")
                         .font(.system(size: 16, weight: .bold))
                         .foregroundStyle(RWColor.ink)
                     Spacer()
-                    Text("Ver todas")
-                        .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(RWColor.greenLight)
+                    Button(action: onCampaigns) {
+                        Text("Ver todas")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(RWColor.greenLight)
+                    }
+                    .buttonStyle(.plain)
                 }
                 .padding(.top, 2)
-                offerList
+                campaignList
             }
             .padding(.horizontal, 18)
             .padding(.top, 6)
             .padding(.bottom, 18)
+        }
+        .task {
+            campaigns = (try? await backend.campaigns()) ?? []
+            loadingCampaigns = false
         }
     }
 
@@ -51,28 +67,38 @@ struct RewardsHomeView: View {
                     .frame(width: 20, height: 22)
                     .frame(width: 36, height: 36)
                     .background(RWColor.ink2)
-                    .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 3) {
-                    (Text("Bla").foregroundColor(Color(hex: 0x111111))
-                     + Text("Xx").foregroundColor(RWColor.greenLight))
-                        .font(BlaxxFont.display(18, weight: .bold))
-                    Text("REWARDS")
-                        .font(.system(size: 8, weight: .semibold))
-                        .tracking(2.5)
-                        .foregroundStyle(RWColor.muted)
+                    // Marca oficial. Superfície CLARA aqui, então a variante
+                    // com "Bla" em tinta e "Xx" em lime-dark — a arte do pacote
+                    // tem "Bla" branco e sumiria. A arte já inclui "REWARDS".
+                    Image("BlaxxWordmarkClaro")
+                        .resizable().scaledToFit()
+                        .frame(height: 26)
+                        .accessibilityLabel("BlaXx Rewards")
                 }
             }
             Spacer()
             HStack(spacing: 14) {
-                Image(systemName: "bell")
-                    .font(.system(size: 22))
-                    .foregroundStyle(Color(hex: 0x15161A))
-                Text("R")
-                    .font(.system(size: 15, weight: .heavy))
-                    .foregroundStyle(RWColor.neon)
-                    .frame(width: 36, height: 36)
-                    .background(RWColor.ink2)
-                    .clipShape(Circle())
+                Button(action: onBell) {
+                    Image(systemName: "bell")
+                        .font(.system(size: 22))
+                        .foregroundStyle(Color(hex: 0x15161A))
+                        .frame(minWidth: 44, minHeight: 44, alignment: .trailing)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Notificações")
+
+                Button(action: onAvatar) {
+                    Text(String((backend.user?.name.prefix(1) ?? "R")).uppercased())
+                        .font(.system(size: 15, weight: .heavy))
+                        .foregroundStyle(RWColor.neon)
+                        .frame(width: 36, height: 36)
+                        .background(RWColor.ink2)
+                        .clipShape(Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("Minha conta")
             }
         }
         .padding(.top, 2)
@@ -80,43 +106,68 @@ struct RewardsHomeView: View {
 
     // MARK: Hero
 
+    /// Saldo REAL da carteira. Antes o hero mostrava `store.totalBRL` /
+    /// `store.totalPts` (mock) e um "+8,42% este mês" fixo no código, colados
+    /// logo acima de botões que movem dinheiro de verdade. Sem sessão o hero
+    /// mostra "—" em vez de número inventado.
     private var hero: some View {
         ZStack(alignment: .bottomTrailing) {
             VStack(alignment: .leading, spacing: 0) {
-                Text("Seu patrimônio")
+                Text("Seu saldo")
                     .font(.system(size: 13, weight: .medium))
                     .foregroundStyle(RWColor.heroSub)
                 HStack(alignment: .firstTextBaseline, spacing: 0) {
-                    Text("R$ \(RWFormat.n(store.totalBRL))")
+                    Text(brlText)
                         .font(BlaxxFont.display(34, weight: .bold))
                         .foregroundStyle(.white)
-                    Text(",00")
-                        .font(BlaxxFont.display(20, weight: .bold))
-                        .foregroundStyle(RWColor.heroNum)
                 }
                 .padding(.top, 4)
-                Text("\(RWFormat.n(store.totalPts)) pontos BlaXx")
+                Text(ptsText)
                     .font(.system(size: 13))
                     .foregroundStyle(RWColor.heroSub)
                     .padding(.top, 2)
-                HStack(spacing: 5) {
-                    Image(systemName: "arrow.up.right").font(.system(size: 13, weight: .bold))
-                    Text("+8,42% este mês").font(.system(size: 13, weight: .bold))
+                if let age = cacheNote {
+                    Text(age)
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(RWColor.countdownFg)
+                        .padding(.horizontal, 9).padding(.vertical, 5)
+                        .background(RWColor.countdownBg)
+                        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+                        .padding(.top, 12)
                 }
-                .foregroundStyle(RWColor.neon)
-                .padding(.horizontal, 11).padding(.vertical, 6)
-                .background(RWColor.neon.opacity(0.18))
-                .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
-                .padding(.top, 12)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             RWSparkline()
                 .frame(width: 150, height: 74)
+                .opacity(backend.wallet == nil ? 0.25 : 1)
         }
         .padding(.init(top: 20, leading: 20, bottom: 16, trailing: 20))
         .background(RWColor.heroGradient)
-        .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    private var brlText: String {
+        guard let w = backend.wallet else { return "—" }
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.locale = Locale(identifier: "pt_BR")
+        return f.string(from: NSNumber(value: w.balance_brl_equiv)) ?? "R$ 0,00"
+    }
+
+    private var ptsText: String {
+        guard let w = backend.wallet else { return "Entre na sua conta para ver o saldo" }
+        if w.pending_pts > 0 {
+            return "\(RWFormat.n(w.balance_pts)) pontos · \(RWFormat.n(w.pending_pts)) a confirmar"
+        }
+        return "\(RWFormat.n(w.balance_pts)) pontos BlaXx"
+    }
+
+    /// O `RewardsBackend` mantém o último wallet conhecido em cache por 1h para
+    /// a tela não abrir vazia. Quando o número exibido vem do cache, dizer isso
+    /// é mais honesto que exibi-lo como se fosse fresco.
+    private var cacheNote: String? {
+        backend.wallet != nil && !backend.ready ? "Saldo do último acesso" : nil
     }
 
     // MARK: Quick actions
@@ -143,36 +194,59 @@ struct RewardsHomeView: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 14)
             .background(primary ? RWColor.ink2 : .white)
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .shadow(color: primary ? Color(hex: 0x40C814).opacity(0.25) : RWColor.cardShadow,
                     radius: primary ? 8 : 5, x: 0, y: primary ? 6 : 2)
         }
         .buttonStyle(.plain)
     }
 
-    // MARK: Offer list
+    // MARK: Campanhas
 
-    private var offerList: some View {
-        VStack(spacing: 11) {
-            ForEach(store.offerIds, id: \.self) { id in
-                let p = store.program(id: id)
-                Button { onOffer(id) } label: {
-                    HStack(spacing: 13) {
-                        RWProgramLogo(program: p, size: 46)
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(p.name).font(.system(size: 15, weight: .bold)).foregroundStyle(RWColor.ink)
-                            Text("+\(p.bonus)% de bônus").font(.system(size: 14, weight: .bold)).foregroundStyle(RWColor.bonus)
-                            Text("Expira em \(store.offerExpiry(id)) dias").font(.system(size: 11, weight: .medium)).foregroundStyle(RWColor.rowExpiry)
+    @ViewBuilder
+    private var campaignList: some View {
+        if loadingCampaigns {
+            RWListState(kind: .loading, message: "Carregando campanhas…")
+        } else if campaigns.isEmpty {
+            RWListState(kind: .empty,
+                        message: "Nenhuma campanha ativa agora. Quando houver, ela aparece aqui.")
+        } else {
+            VStack(spacing: 11) {
+                ForEach(campaigns.prefix(3)) { c in
+                    Button(action: onCampaigns) {
+                        HStack(spacing: 13) {
+                            Image(systemName: "megaphone.fill")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundStyle(RWColor.ink)
+                                .frame(width: 46, height: 46)
+                                .background(RWColor.neon)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(c.name)
+                                    .font(.system(size: 15, weight: .bold))
+                                    .foregroundStyle(RWColor.ink)
+                                    .multilineTextAlignment(.leading)
+                                Text("+\(RWFormat.n(c.reward_pts)) pontos")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundStyle(RWColor.bonus)
+                                Text(c.isJoined
+                                     ? (c.isCompleted ? "Concluída" : "Participando · \(c.progressPct)%")
+                                     : "Toque para participar")
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundStyle(RWColor.rowExpiry)
+                            }
+                            Spacer(minLength: 6)
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundStyle(Color(hex: 0xC2C6BC))
                         }
-                        Spacer()
-                        Image(systemName: "chevron.right").font(.system(size: 18, weight: .semibold)).foregroundStyle(Color(hex: 0xC2C6BC))
+                        .padding(.init(top: 13, leading: 15, bottom: 13, trailing: 15))
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                        .rwBrutalCard()
                     }
-                    .padding(.init(top: 13, leading: 15, bottom: 13, trailing: 15))
-                    .background(.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-                    .rwCardShadow()
+                    .buttonStyle(.plain)
                 }
-                .buttonStyle(.plain)
             }
         }
     }

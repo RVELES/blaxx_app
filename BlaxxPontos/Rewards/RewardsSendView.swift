@@ -62,7 +62,7 @@ struct RewardsSendView: View {
             }
             .padding(.init(top: 12, leading: 14, bottom: 12, trailing: 14))
             .background(RWColor.searchBg)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .padding(.bottom, 18)
 
             RWFieldLabel(text: "Contatos recentes").padding(.bottom, 9)
@@ -96,7 +96,7 @@ struct RewardsSendView: View {
                 }
                 .padding(.init(top: 13, leading: 15, bottom: 13, trailing: 15))
                 .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .rwCardShadow()
             }
             .buttonStyle(.plain)
@@ -121,7 +121,7 @@ struct RewardsSendView: View {
         .padding(.vertical, 11)
         .padding(.horizontal, selected ? 12 : 4)
         .background(selected ? RWColor.chipSelBg : .clear)
-        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     // MARK: Step 1 — amount
@@ -167,7 +167,7 @@ struct RewardsSendView: View {
                 .lineLimit(2...4)
                 .font(.system(size: 14))
                 .padding(.init(top: 13, leading: 14, bottom: 13, trailing: 14))
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(RWColor.chipBorder, lineWidth: 1.5))
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(RWColor.chipBorder, lineWidth: 1.5))
 
             VStack(alignment: .leading, spacing: 0) {
                 Text("Destinatário recebe").font(.system(size: 12)).foregroundStyle(RWColor.heroSub)
@@ -210,8 +210,8 @@ struct RewardsSendView: View {
             }
             .padding(.horizontal, 16)
             .background(.white)
-            .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0xEEF0EA), lineWidth: 1))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(hex: 0xEEF0EA), lineWidth: 1))
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.bottom, 16)
 
             HStack(spacing: 10) {

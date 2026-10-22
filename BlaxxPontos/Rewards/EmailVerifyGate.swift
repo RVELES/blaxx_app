@@ -28,82 +28,82 @@ struct EmailVerifyGate: View {
 
     var body: some View {
         ZStack {
-            BlaxxColor.gray50.ignoresSafeArea()
+            RWColor.screenBg.ignoresSafeArea()
             ScrollView {
                 VStack(spacing: 24) {
                     header
-                    BlaxxCard {
-                        VStack(alignment: .leading, spacing: 14) {
-                            Eyebrow(text: "Verificação obrigatória")
-                            Text("Confirme seu e-mail")
-                                .font(BlaxxFont.display(22))
-                            Text("Para sua segurança, precisamos confirmar o e-mail \(backend.user?.email ?? "") antes de liberar as operações.")
-                                .font(.system(size: 13))
-                                .foregroundStyle(BlaxxColor.gray600)
+                    VStack(alignment: .leading, spacing: 14) {
+                        Eyebrow(text: "Verificação obrigatória", color: RWColor.amber)
+                        Text("Confirme seu e-mail")
+                            .font(BlaxxFont.display(22))
+                            .foregroundStyle(RWColor.ink)
+                        Text("Para sua segurança, precisamos confirmar o e-mail \(backend.user?.email ?? "") antes de liberar as operações.")
+                            .font(.system(size: 13))
+                            .foregroundStyle(RWColor.breakdownK)
 
-                            if !sentOnce {
-                                Button {
-                                    Task { await resend() }
-                                } label: {
-                                    HStack {
-                                        if sending { ProgressView().scaleEffect(0.7) }
-                                        Text(sending ? "Enviando…" : "Enviar código por e-mail")
-                                    }
-                                }
-                                .buttonStyle(PrimaryButtonStyle(fullWidth: true))
-                                .disabled(sending)
-                            } else {
-                                BlaxxField(label: "Código de 6 dígitos", value: $code,
-                                           placeholder: "000000",
-                                           hint: "Veja na sua caixa de entrada")
+                        if !sentOnce {
+                            RWCTA(title: sending ? "Enviando…" : "Enviar código por e-mail",
+                                  disabled: sending) {
+                                Task { await resend() }
+                            }
+                        } else {
+                            VStack(alignment: .leading, spacing: 6) {
+                                RWFieldLabel(text: "Código de 6 dígitos")
+                                TextField("", text: $code,
+                                          prompt: Text("000000").foregroundColor(RWColor.muted))
+                                    .font(.system(size: 15, weight: .medium))
+                                    .foregroundStyle(RWColor.ink)
                                     #if os(iOS)
                                     .keyboardType(.numberPad)
                                     #endif
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 14)
+                                    .background(RWColor.searchBg)
+                                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                Text("Veja na sua caixa de entrada")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(RWColor.muted)
+                            }
 
-                                if let error {
-                                    Text(error)
+                            if let error {
+                                RWSheetError(message: error)
+                            }
+
+                            RWCTA(title: loading ? "Validando…" : "Confirmar e-mail",
+                                  disabled: loading || code.count != 6) {
+                                Task { await submit() }
+                            }
+                            .accessibilityLabel("Confirmar código de verificação de e-mail")
+
+                            HStack {
+                                if resendCooldown > 0 {
+                                    Text("Reenviar em \(resendCooldown)s")
                                         .font(.system(size: 12))
-                                        .foregroundStyle(BlaxxColor.negative)
-                                }
-
-                                Button {
-                                    Task { await submit() }
-                                } label: {
-                                    HStack {
-                                        if loading { ProgressView().scaleEffect(0.7) }
-                                        Text(loading ? "Validando…" : "Confirmar e-mail")
-                                    }
-                                }
-                                .buttonStyle(PrimaryButtonStyle(fullWidth: true))
-                                .disabled(loading || code.count != 6)
-                                .accessibilityLabel("Confirmar código de verificação de e-mail")
-
-                                HStack {
-                                    if resendCooldown > 0 {
-                                        Text("Reenviar em \(resendCooldown)s")
-                                            .font(.system(size: 12))
-                                            .foregroundStyle(BlaxxColor.gray400)
-                                    } else {
-                                        Button("Reenviar código") {
-                                            Task { await resend() }
-                                        }
-                                        .buttonStyle(.plain)
-                                        .foregroundStyle(BlaxxColor.limeDark)
-                                        .font(.system(size: 12))
-                                    }
-                                    Spacer()
-                                    Button("Sair") {
-                                        TokenStore.clear()
-                                        TokenStore.clearProfile()
-                                        Task { await backend.refreshUserAndEmailStatus() }
+                                        .foregroundStyle(RWColor.muted)
+                                } else {
+                                    Button("Reenviar código") {
+                                        Task { await resend() }
                                     }
                                     .buttonStyle(.plain)
-                                    .foregroundStyle(BlaxxColor.gray400)
+                                    .foregroundStyle(RWColor.greenLight)
                                     .font(.system(size: 12))
                                 }
+                                Spacer()
+                                Button("Sair") {
+                                    TokenStore.clear()
+                                    TokenStore.clearProfile()
+                                    Task { await backend.refreshUserAndEmailStatus() }
+                                }
+                                .buttonStyle(.plain)
+                                .foregroundStyle(RWColor.muted)
+                                .font(.system(size: 12))
                             }
                         }
                     }
+                    .padding(20)
+                    .background(.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                    .rwBrutalCard()
                     .frame(maxWidth: 460)
                 }
                 .padding(40)
@@ -117,12 +117,15 @@ struct EmailVerifyGate: View {
 
     private var header: some View {
         VStack(spacing: 4) {
-            BlaxxWordmark(size: 40, tone: .dark)
+            Image("BlaxxWordmarkClaro")
+                .resizable().scaledToFit()
+                .frame(height: 40)
+                .accessibilityLabel("BlaXx Rewards")
             Text("Confirmação de e-mail")
                 .font(.system(size: 11, weight: .semibold))
                 .tracking(1.8)
                 .textCase(.uppercase)
-                .foregroundStyle(BlaxxColor.gray400)
+                .foregroundStyle(RWColor.muted)
         }
     }
 

@@ -5,6 +5,21 @@
 //  View raiz. Roteia para tela de login OU para a shell adequada
 //  (Mobile no iPhone/iPad compact, Sidebar no macOS/iPad regular).
 //
+//  ⚠️ LEGADO — LEIA ANTES DE AUDITAR OU CORRIGIR ALGO AQUI.
+//
+//  `body` devolve `RewardsRoot()`. Todo o roteamento antigo virou `legacyBody`,
+//  que **ninguém referencia** — logo, estas telas NÃO estão no app:
+//
+//      BuyView · RedeemView · MobileShell · HomeView · AuthenticatedShell
+//
+//  A árvore VIVA é `Rewards/`: RewardsRoot → RewardsShell → RewardsBuySheet /
+//  RewardsSellSheet / RewardsTransferSheet.
+//
+//  Isto já custou duas auditorias (20/07 e 01/08) avaliando `BuyView.swift` e
+//  `RedeemView.swift`: os "✅" delas não valiam para o app real, e o achado N1
+//  (botão "Simular pagamento" sem gate) sobreviveu escondido atrás desses ✅.
+//  Ao corrigir um comportamento, corrija no sheet vivo — não aqui.
+//
 
 import SwiftUI
 

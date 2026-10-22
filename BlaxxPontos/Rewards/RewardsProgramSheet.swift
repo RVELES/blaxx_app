@@ -28,7 +28,7 @@ struct RewardsProgramSheet: View {
                         .foregroundStyle(p.fg)
                         .frame(width: 46, height: 46)
                         .background(p.bg)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     VStack(alignment: .leading, spacing: 2) {
                         Text(p.name)
                             .font(.system(size: 17, weight: .bold))

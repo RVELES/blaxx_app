@@ -114,8 +114,8 @@ struct RewardsTradeSheet: View {
             }
             .padding(.horizontal, 16)
             .background(.white)
-            .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0xEEF0EA), lineWidth: 1))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 20).stroke(Color(hex: 0xEEF0EA), lineWidth: 1))
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.bottom, 22)
             RWCTA(title: "Confirmar troca") { confirm() }
         }

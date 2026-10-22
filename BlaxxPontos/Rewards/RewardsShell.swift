@@ -42,6 +42,9 @@ struct RewardsShell: View {
     @State private var screen: RWScreen = .home
     @State private var sheet: RWSheet?
     @State private var sendReset = 0
+    /// Área logada (Conta, Extrato, Cartão, Perfil, Campanhas…). Vem por cima
+    /// da shell, com roteador próprio — ver `RewardsAccountViews.swift`.
+    @State private var account: RWAccountRoute?
 
     var body: some View {
         ZStack {
@@ -57,7 +60,9 @@ struct RewardsShell: View {
                             onBuy: { sheet = .buy },
                             onSell: { sheet = .sell },
                             onTransfer: { sheet = .transfer },
-                            onOffer: { sheet = .offer($0) })
+                            onBell: { account = .notificacoes },
+                            onAvatar: { account = .menu },
+                            onCampaigns: { account = .campanhas })
                     case .carteira:
                         RewardsWalletView(onProgram: { sheet = .program($0) })
                     case .parceiros:
@@ -75,6 +80,20 @@ struct RewardsShell: View {
                     onFab: { openTrade() })
             }
             .ignoresSafeArea(edges: .bottom)
+
+            // Área logada em tela cheia (Conta e tudo que sai dela).
+            if let route = account {
+                RewardsAccountView(
+                    initialRoute: route,
+                    onClose: { account = nil },
+                    onOpenBuy: { account = nil; sheet = .buy },
+                    onOpenSell: { account = nil; sheet = .sell },
+                    onOpenTransfer: { account = nil; sheet = .transfer },
+                    onOpenWallet: { account = nil; screen = .carteira },
+                    onOpenPartners: { account = nil; screen = .parceiros })
+                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                    .zIndex(15)
+            }
 
             // Bottom-sheet overlays with scrim
             if let sheet {
@@ -102,6 +121,7 @@ struct RewardsShell: View {
         .task { await backend.start() }
         .animation(.easeInOut(duration: 0.25), value: screen)
         .animation(.spring(response: 0.36, dampingFraction: 0.82), value: sheet?.id)
+        .animation(.easeInOut(duration: 0.22), value: account)
     }
 
     // MARK: Routing
@@ -196,7 +216,7 @@ struct RWSheetContainer<Content: View>: View {
             content()
                 .frame(maxWidth: .infinity)
                 .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
                 .frame(maxHeight: 720, alignment: .bottom)
                 .shadow(color: .black.opacity(0.32), radius: 30, x: 0, y: -24)
                 .ignoresSafeArea(edges: .bottom)
@@ -252,7 +272,7 @@ struct RWTabBar: View {
                 .foregroundStyle(RWColor.ink2)
                 .frame(width: 62, height: 62)
                 .background(RWColor.fabGradient)
-                .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .clipShape(Circle())
                 .shadow(color: Color(hex: 0x40D210).opacity(0.45), radius: 11, x: 0, y: 10)
         }
         .buttonStyle(.plain)

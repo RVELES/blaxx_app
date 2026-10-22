@@ -102,7 +102,7 @@ struct RWSheetInput: View {
             .padding(.horizontal, 14)
             .padding(.vertical, 14)
             .background(RWColor.searchBg)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
 
@@ -156,6 +156,9 @@ struct RewardsBuySheet: View {
     @State private var qrImage: UIImage?
     @State private var busy = false
     @State private var error: String?
+    /// `true` só quando o backend responde `GET /pix/provider` com `is_mock`.
+    /// Gate da afordância de simulação — ver `pixStep`.
+    @State private var providerIsMock = false
 
     private var customAmount: Double? {
         let cleaned = customBrl.replacingOccurrences(of: ",", with: ".")
@@ -180,6 +183,11 @@ struct RewardsBuySheet: View {
         .task {
             packages = (try? await backend.packages()) ?? []
             if selectedKey == nil { selectedKey = packages.first?.key }
+            #if DEBUG
+            // Só faz sentido perguntar em DEBUG: em release a afordância de
+            // simulação não é renderizada de qualquer forma.
+            providerIsMock = (try? await backend.providerInfo())?.is_mock ?? false
+            #endif
         }
     }
 
@@ -237,9 +245,9 @@ struct RewardsBuySheet: View {
             .padding(.horizontal, 15)
             .padding(.vertical, 13)
             .background(selected ? RWColor.chipSelBg : .white)
-            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .stroke(selected ? RWColor.neon : RWColor.chipBorder, lineWidth: 1.5))
         }
         .buttonStyle(.plain)
@@ -266,9 +274,9 @@ struct RewardsBuySheet: View {
                         .frame(width: 200, height: 200)
                         .padding(14)
                         .background(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                         .overlay(
-                            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                            RoundedRectangle(cornerRadius: 20, style: .continuous)
                                 .stroke(RWColor.chipBorder, lineWidth: 1.5))
                         .frame(maxWidth: .infinity)
                         .padding(.bottom, 16)
@@ -283,7 +291,7 @@ struct RewardsBuySheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(14)
                     .background(RWColor.simBg)
-                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                     .padding(.bottom, 10)
                 Button {
                     UIPasteboard.general.string = c.br_code
@@ -304,14 +312,29 @@ struct RewardsBuySheet: View {
 
                 if let error { RWSheetError(message: error).padding(.bottom, 14) }
 
-                RWCTA(title: busy ? "Confirmando…" : "Simular pagamento", disabled: busy) {
-                    Task { await simulate(c) }
-                }
-                .padding(.bottom, 10)
-                RWCTA(title: "Já paguei", ghost: true, disabled: busy) {
+                // O CTA primário é o do fluxo REAL. "Simular pagamento" era o
+                // primário e era renderizado incondicionalmente — inclusive em
+                // release, onde `POST /pix/simulate-payment` responde 403
+                // (`api/pix.py:327`): botão principal quebrado numa tela de
+                // pagamento de verdade (achado N1, auditoria de 05/08).
+                RWCTA(title: busy ? "Verificando…" : "Já paguei", disabled: busy) {
                     Task { await poll(c) }
                 }
                 .padding(.bottom, 14)
+
+                #if DEBUG
+                // Dois gates, como no backend: build de desenvolvimento E
+                // provider mock. `RWHomologBadge` some em release, então
+                // depender só dele deixaria o botão órfão do aviso.
+                if providerIsMock {
+                    RWCTA(title: busy ? "Confirmando…" : "Simular pagamento",
+                          ghost: true, disabled: busy) {
+                        Task { await simulate(c) }
+                    }
+                    .padding(.bottom, 14)
+                }
+                #endif
+
                 RWHomologBadge()
             }
         }
@@ -402,6 +425,9 @@ struct RewardsSellSheet: View {
     @State private var quote: RedeemQuoteDTO?
     @State private var busy = false
     @State private var error: String?
+    /// Resultado do resgate. O status decide a tela final: com Asaas o caminho
+    /// comum é `processing` (`services/redeem.py:203`), não `paid`.
+    @State private var payout: RedeemResponse?
 
     private var available: Int { backend.balancePts ?? 0 }
 
@@ -435,11 +461,13 @@ struct RewardsSellSheet: View {
                 amountBlock
                     .padding(.bottom, 16)
 
+                // Só o valor que cai na conta e quantos pontos saem. O rótulo
+                // de cotação saiu por decisão de produto (12/08).
                 RWAmountCard(
                     caption: "Você recebe via PIX",
                     value: quote.map { rwFmtBrl($0.amount_brl) } ?? "—",
                     unit: "",
-                    footnote: quote.map { "\(RWFormat.n($0.points)) pontos · taxa \($0.rate)" })
+                    footnote: quote.map { "\(RWFormat.n($0.points)) pontos" })
                     .padding(.bottom, 16)
 
                 if let error { RWSheetError(message: error).padding(.bottom, 14) }
@@ -501,15 +529,53 @@ struct RewardsSellSheet: View {
         }
     }
 
+    /// Copy final derivada de `payout.status`, espelhando a ramificação do PWA
+    /// (`assets/blaxx-app.js:1811-1824`) — a mais completa das 5 plataformas:
+    /// trata os quatro status e cai num texto neutro no desconhecido, em vez de
+    /// afirmar conclusão. `requested` entra junto de `processing` porque
+    /// também é estado não-final.
+    private var doneCopy: (title: String, message: String, failed: Bool) {
+        switch payout?.status.lowercased() {
+        case "paid":
+            return ("Resgate concluído!",
+                    "O valor já foi enviado para a sua chave PIX.", false)
+        case "processing", "requested":
+            return ("Resgate em processamento",
+                    "O PIX sai em até 1 dia útil. Acompanhe pelo extrato.", false)
+        case "failed":
+            let reason = payout?.failure_reason
+            return ("Resgate não concluído",
+                    reason.map { "\($0) — os pontos foram estornados." }
+                        ?? "Os pontos foram estornados automaticamente.", true)
+        case let other:
+            return ("Resgate registrado",
+                    other.map { "Status: \($0). Acompanhe pelo extrato." }
+                        ?? "Acompanhe o andamento pelo extrato.", false)
+        }
+    }
+
     private var doneStep: some View {
-        VStack(spacing: 0) {
-            RWSuccessBadge().padding(.bottom, 22)
-            Text("Resgate solicitado!")
+        let copy = doneCopy
+        return VStack(spacing: 0) {
+            if copy.failed {
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 46, weight: .bold))
+                    .foregroundStyle(RWColor.amber)
+                    .frame(height: 88)
+                    .padding(.bottom, 22)
+                    .accessibilityLabel("Resgate não concluído")
+            } else {
+                RWSuccessBadge().padding(.bottom, 22)
+            }
+            Text(copy.title)
                 .font(BlaxxFont.display(24, weight: .bold))
                 .foregroundStyle(RWColor.ink)
-            Text("O valor será enviado para sua chave PIX.")
+                .multilineTextAlignment(.center)
+            Text(copy.message)
                 .font(.system(size: 13))
                 .foregroundStyle(RWColor.chipPts)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.top, 12)
             RWCTA(title: "Concluir") { onClose() }
                 .padding(.top, 26)
@@ -528,7 +594,7 @@ struct RewardsSellSheet: View {
         busy = true; error = nil
         defer { busy = false }
         do {
-            _ = try await backend.redeem(points: Int(amount))
+            payout = try await backend.redeem(points: Int(amount))
             await backend.refresh()
             withAnimation { step = .done }
         } catch let e as APIError {

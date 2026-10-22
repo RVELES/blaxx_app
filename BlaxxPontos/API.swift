@@ -112,6 +112,31 @@ struct VoucherDTO: Decodable, Identifiable {
     let created_at: String
 }
 
+// MARK: - Campanhas
+
+/// Espelha `Campaign.to_dict()` + os campos que `GET /campaigns/` acrescenta
+/// quando há Bearer válido (`joined`, `progress_*`, `completed_at`). Esses
+/// quatro são opcionais porque a rota é pública e os omite sem sessão.
+struct CampaignDTO: Decodable, Identifiable {
+    let id: String
+    let name: String
+    let description: String?
+    let mechanic: String?
+    let target_brl: Double
+    let reward_pts: Int
+    let period_start: String?
+    let period_end: String?
+    let is_active: Bool
+    let joined: Bool?
+    let progress_brl: Double?
+    let progress_pct: Int?
+    let completed_at: String?
+
+    var isJoined: Bool { joined ?? false }
+    var progressPct: Int { progress_pct ?? 0 }
+    var isCompleted: Bool { completed_at != nil }
+}
+
 struct WalletDTO: Codable {
     let id: String
     let user_id: String
@@ -516,11 +541,15 @@ actor BlaxxAPI {
     /// disponível no backend (compat).
     func deleteAccount(password: String) async throws {
         let body = try JSONEncoder().encode(["password": password])
+        // O blueprint de auth é montado em `/auth` (`app/__init__.py:500`), então
+        // a rota real é `/auth/account` — `/account` respondia 404 e caía no
+        // fallback, que também não existe. Só apareceu ao ligar "Excluir conta"
+        // na tela de perfil; antes nenhuma tela viva chamava este método.
         do {
-            _ = try await request(path: "/account", method: "DELETE",
+            _ = try await request(path: "/auth/account", method: "DELETE",
                                   body: body, as: OKResponse.self)
         } catch let e as APIError where e.status == 404 || e.status == 405 {
-            _ = try await request(path: "/account/delete", method: "POST",
+            _ = try await request(path: "/auth/account/delete", method: "POST",
                                   body: body, as: OKResponse.self)
         }
     }
@@ -646,6 +675,21 @@ actor BlaxxAPI {
     func myVouchers() async throws -> [VoucherDTO] {
         let r = try await request(path: "/vouchers/", as: VouchersResponse.self)
         return r.items
+    }
+
+    // MARK: Campanhas
+
+    /// Campanhas ativas. Com sessão válida cada item vem com `joined` e
+    /// progresso do usuário — é o que a home do PWA consome desde 02/08.
+    func campaigns() async throws -> [CampaignDTO] {
+        struct Resp: Decodable { let items: [CampaignDTO] }
+        return (try await request(path: "/campaigns/", as: Resp.self)).items
+    }
+
+    func joinCampaign(_ id: String) async throws {
+        struct Resp: Decodable { let id: String? }
+        _ = try await request(path: "/campaigns/\(id)/join", method: "POST",
+                              body: Data("{}".utf8), as: Resp.self)
     }
 
     // MARK: Carteira

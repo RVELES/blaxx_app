@@ -59,7 +59,7 @@ struct RewardsWalletView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(20)
                 .background(RWColor.heroGradient)
-                .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
 
                 // Segmented period
                 HStack(spacing: 6) {
@@ -67,7 +67,7 @@ struct RewardsWalletView: View {
                 }
                 .padding(5)
                 .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .rwCardShadow()
 
                 // Chart
@@ -105,7 +105,7 @@ struct RewardsWalletView: View {
                             }
                             .padding(.init(top: 13, leading: 15, bottom: 13, trailing: 15))
                             .background(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
                             .rwCardShadow()
                         }
                         .buttonStyle(.plain)
@@ -153,6 +153,8 @@ struct RewardsWalletView: View {
                     Text(name)
                         .font(.system(size: 13, weight: .semibold))
                         .foregroundStyle(Color(hex: 0xCFD3CB))
+                        .lineLimit(1)
+                        .truncationMode(.tail)
                     if let pts {
                         Text("\(pts) pontos")
                             .font(.system(size: 11, weight: .medium))
@@ -191,9 +193,9 @@ struct RewardsWalletView: View {
                 colors: [Color(hex: 0x0F1210), Color(hex: 0x0A0B0C)],
                 startPoint: .topLeading, endPoint: .bottomTrailing)
         )
-        .clipShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
         .overlay(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
+            RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .stroke(RWColor.neon.opacity(0.15), lineWidth: 1)
         )
         .shadow(color: Color(hex: 0x40D210).opacity(0.12), radius: 16, x: 0, y: 8)
@@ -207,7 +209,7 @@ struct RewardsWalletView: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
                 .background(period == value ? RWColor.ink2 : .clear)
-                .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
         .buttonStyle(.plain)
     }

@@ -4,6 +4,10 @@
 //
 //  Fluxo 1 do fluxograma: Comprar pontos via PIX.
 //
+//  ⚠️ CÓDIGO MORTO — alcançável só por `ContentView.legacyBody`, que ninguém
+//  chama. A tela viva de compra é `Rewards/RewardsFinanceSheets.swift`
+//  (`RewardsBuySheet`). Corrigir aqui não chega ao app. Ver ContentView.swift.
+//
 
 import SwiftUI
 import CoreImage

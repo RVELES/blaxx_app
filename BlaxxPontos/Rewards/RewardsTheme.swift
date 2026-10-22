@@ -84,8 +84,9 @@ extension View {
         shadow(color: RWColor.cardShadow, radius: 0, x: 5, y: 5)
     }
 
-    /// Cartão brutalista completo: borda tinta grossa + sombra dura + cantos quase retos.
-    func rwBrutalCard(corner: CGFloat = 4, border: CGFloat = 2.5) -> some View {
+    /// Cartão brutalista completo: borda tinta grossa + sombra dura + cantos
+    /// arredondados na escala canônica (md=16 — o cartão mais genérico do app).
+    func rwBrutalCard(corner: CGFloat = 16, border: CGFloat = 3) -> some View {
         self
             .overlay(
                 RoundedRectangle(cornerRadius: corner, style: .continuous)

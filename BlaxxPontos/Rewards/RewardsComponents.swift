@@ -42,7 +42,7 @@ struct RWProgramChip: View {
                     .foregroundStyle(program.fg)
                     .frame(width: 30, height: 30)
                     .background(program.bg)
-                    .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 VStack(alignment: .leading, spacing: 1) {
                     Text(program.name)
                         .font(.system(size: 13, weight: .bold))
@@ -57,9 +57,9 @@ struct RWProgramChip: View {
             .padding(.trailing, 12)
             .padding(.vertical, 7)
             .background(selected ? RWColor.chipSelBg : .white)
-            .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 5, style: .continuous)
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .stroke(selected ? RWColor.neon : RWColor.ink, lineWidth: 2)
             )
         }
@@ -97,10 +97,10 @@ struct RWCTA: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 17)
                 .background(ghost ? Color.white : RWColor.ink2)
-                .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                        .stroke(RWColor.ink, lineWidth: 2.5)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(RWColor.ink, lineWidth: 3)
                 )
         }
         .buttonStyle(.plain)
@@ -129,7 +129,7 @@ struct RWPctRow: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 9)
                 .background(RWColor.pctBg)
-                .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         }
         .buttonStyle(.plain)
     }
@@ -258,8 +258,8 @@ struct RWReceiveCard: View {
         }
         .padding(18)
         .background(RWColor.heroGradient)
-        .clipShape(RoundedRectangle(cornerRadius: 6, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous).stroke(RWColor.ink, lineWidth: 2.5))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(RWColor.ink, lineWidth: 3))
         .rwCardShadow()
     }
 }

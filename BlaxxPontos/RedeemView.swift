@@ -4,6 +4,10 @@
 //
 //  Fluxo 3: Resgatar pontos via PIX.
 //
+//  ⚠️ CÓDIGO MORTO — alcançável só por `ContentView.legacyBody`, que ninguém
+//  chama. A tela viva de resgate é `Rewards/RewardsFinanceSheets.swift`
+//  (`RewardsSellSheet`). Corrigir aqui não chega ao app. Ver ContentView.swift.
+//
 
 import SwiftUI
 
