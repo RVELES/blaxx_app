@@ -107,6 +107,7 @@ estes na D&B e na Apple: diferença de grafia entre o D-U-N-S e a inscrição tr
 | Razão social (Legal Entity Name) | BLAXX REWARDS LTDA |
 | Nome fantasia | Blaxx Pontos |
 | CNPJ | 68.260.588/0001-56 (matriz, situação ativa) |
+| D-U-N-S | 320887228 |
 | Abertura | 28/07/2026 |
 | Natureza jurídica | Sociedade Empresária Limitada · Microempresa · Simples Nacional |
 | Endereço | Avenida Marquês de São Vicente, 405, Conj. 1804, Várzea da Barra Funda, São Paulo/SP, CEP 01139-001 |
