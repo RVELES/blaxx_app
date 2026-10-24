@@ -20,7 +20,7 @@ struct BXConvidarTela: View {
 
     private var mensagem: String {
         let nome = sessao.usuario?.primeiroNome.map { "\($0) te convidou para a BlaXx. " } ?? ""
-        return "\(nome)Compre pontos, envie para quem quiser e troque por benefícios em parceiros selecionados. Sem mensalidade. Crie sua conta: \(Self.link)"
+        return "\(nome)Receba e envie pontos entre contas BlaXx e troque por benefícios. Sem mensalidade. Crie sua conta: \(Self.link)"
     }
 
     var body: some View {
