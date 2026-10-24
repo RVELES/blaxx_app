@@ -1,3 +1,4 @@
+#if BX_LEGADO_REWARDS   // desativado no redesenho Embarque de 22/10/2026. Não apagar sem decisão do dono (D14).
 //
 //  RewardsBackend.swift
 //  BlaxxPontos
@@ -270,3 +271,5 @@ final class RewardsBackend {
     static let demoPassword = "K7m#qP2vR9wL!"
     #endif
 }
+
+#endif

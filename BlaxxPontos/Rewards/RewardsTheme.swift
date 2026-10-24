@@ -1,3 +1,4 @@
+#if BX_LEGADO_REWARDS   // desativado no redesenho Embarque de 22/10/2026. Não apagar sem decisão do dono (D14).
 //
 //  RewardsTheme.swift
 //  BlaxxPontos
@@ -95,3 +96,5 @@ extension View {
             .rwCardShadow()
     }
 }
+
+#endif

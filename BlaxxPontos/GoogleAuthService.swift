@@ -91,10 +91,17 @@ final class GoogleAuthService: NSObject {
         let nonce: String
     }
 
+    /// Sessão em andamento: o sistema exige referência forte enquanto a folha está aberta,
+    /// e uma segunda chamada simultânea não pode abrir outra folha.
+    private var sessaoAtual: ASWebAuthenticationSession?
+
     /// Abre o popup do Google, troca o auth code por id_token, retorna o JWT
     /// junto com o nonce gerado pra validação anti-replay no backend.
     func signIn() async throws -> SignInResult {
         guard !clientID.isEmpty else { throw GoogleAuthError.missingClientID }
+        guard sessaoAtual == nil else {
+            throw GoogleAuthError.networkFailure("O login com Google já está aberto.")
+        }
 
         // 1) PKCE + state CSRF + nonce anti-replay.
         let verifier = Self.codeVerifier()
@@ -118,11 +125,17 @@ final class GoogleAuthService: NSObject {
         guard let authURL = comp.url else { throw GoogleAuthError.noCodeReturned }
 
         // 3) Abre janela ASWebAuthenticationSession e aguarda callback.
+        // Redesenho 22/10/2026: a continuação é retomada UMA vez só. No iOS 26+, quando `start()` devolve
+        // false o sistema TAMBÉM chama o completion com erro, e a segunda retomada derrubava o app
+        // ("SWIFT TASK CONTINUATION MISUSE"). A sessão fica guardada em `sessaoAtual` até terminar.
+        defer { sessaoAtual = nil }
         let callbackURL: URL = try await withCheckedThrowingContinuation { cont in
+            let retomada = GoogleRetomadaUnica()
             let session = ASWebAuthenticationSession(
                 url: authURL,
                 callbackURLScheme: redirectScheme
             ) { url, err in
+                guard retomada.primeira() else { return }
                 if let err {
                     let nserr = err as NSError
                     if nserr.code == ASWebAuthenticationSessionError.canceledLogin.rawValue {
@@ -140,7 +153,8 @@ final class GoogleAuthService: NSObject {
             }
             session.presentationContextProvider = self
             session.prefersEphemeralWebBrowserSession = false
-            if !session.start() {
+            sessaoAtual = session
+            if !session.start(), retomada.primeira() {
                 cont.resume(throwing: GoogleAuthError.networkFailure(
                     "Não foi possível abrir a janela do Google"
                 ))
@@ -246,15 +260,32 @@ extension GoogleAuthService: ASWebAuthenticationPresentationContextProviding {
     nonisolated func presentationAnchor(
         for session: ASWebAuthenticationSession
     ) -> ASPresentationAnchor {
-        #if os(macOS)
-        return NSApplication.shared.windows.first ?? ASPresentationAnchor()
-        #else
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let window = scene.windows.first(where: { $0.isKeyWindow }) ?? scene.windows.first {
-            return window
+        // O sistema chama na thread principal.
+        MainActor.assumeIsolated {
+            #if os(macOS)
+            return NSApplication.shared.windows.first ?? ASPresentationAnchor()
+            #else
+            let cenas = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            let cena = cenas.first(where: { $0.activationState == .foregroundActive }) ?? cenas.first
+            if let cena, let window = cena.windows.first(where: { $0.isKeyWindow }) ?? cena.windows.first {
+                return window
+            }
+            if let cena { return UIWindow(windowScene: cena) }
+            return ASPresentationAnchor()
+            #endif
         }
-        return ASPresentationAnchor()
-        #endif
+    }
+}
+
+/// Garante que a continuação do `signIn()` seja retomada uma única vez.
+private final class GoogleRetomadaUnica: @unchecked Sendable {
+    private let trava = NSLock()
+    private var usada = false
+    func primeira() -> Bool {
+        trava.lock(); defer { trava.unlock() }
+        if usada { return false }
+        usada = true
+        return true
     }
 }
 

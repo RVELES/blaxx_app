@@ -1,0 +1,329 @@
+# Estilos computados a 375x812 (Chrome headless, 22/10/2026). Legenda: ink=#0A0B0E surf=#FBFAF7 paper=#F4F2EC bg=#E4E1D9 line=#D9D6CE grey=#555860 ink2=#2A2D35 inkMut=#8A8D96 barfg=#C9CBD1 NEON=#59FD27 sh=0 18px 40px rgba(10,11,14,.08). Formato: seletor | LxA ff fs fw fst lh ls tt color bg bt bb r p sh gap «texto»
+===== home
+  .bx-util | 375x28 ff=mono fs=12px fw=400 lh=15.6px color=barfg bg=ink «● Rede em expansão»
+  .bx-util-in | 375x28 ff=mono fs=11px fw=400 lh=14.3px color=barfg p=7px 16px gap=16px «● Rede em expansão»
+  .topbar | 375x62 ff=archivo fs=16px fw=400 color=paper bg=ink bt=1px solid ink2 bb=1px solid ink2 «BlaXx»
+  .topbar .nav | 375x60 ff=archivo fs=16px fw=400 color=paper p=0px 16px gap=10px «BlaXx»
+  .topbar .mark | 114x22 ff=archivo fw=400 «BlaXx»
+  .bxnav-burger | 44x44 ff=archivo fs=15px fw=400 lh=20px bt=1px solid ink2 bb=1px solid ink2 r=999px p=0px 12px gap=4px «»
+  .embarque | 375x900 ff=archivo fs=16px fw=400 color=ink p=16px 0px 40px «CARTÃO DE EMBARQUE · BLA»
+  .cartao | 343x844 ff=archivo fs=16px fw=400 color=ink bg=surf r=24px sh=sh «CARTÃO DE EMBARQUE · BLA»
+  .cartao .miolo | 343x619 ff=archivo fs=16px fw=400 color=ink p=22px 16px 24px gap=20px «CARTÃO DE EMBARQUE · BLA»
+  .topo-linha | 311x36 ff=mono fs=11px fw=400 ls=1.1px tt=uppercase color=grey gap=4px 12px «CARTÃO DE EMBARQUE · BLA»
+  h1.letreiro | 311x254 ff=archivo fs=55.5px fw=900 fst=80% lh=49.95px ls=-1.665px color=ink «Seus pontos. Novos desti»
+  h1.letreiro .ln:last-child > i | 311x94 ff=archivo fs=36.63px fw=900 fst=80% lh=45.4212px ls=-1.665px color=ink «Compre. Ganhe. Envie. Tr»
+  h1.letreiro mark | 246x91 ff=archivo fs=36.63px fw=900 fst=80% lh=46.8864px ls=-1.665px color=ink bg=NEON p=1.8315px 6.5934px «Compre. Ganhe. Envie. Tr»
+  .grade | 311x128 ff=archivo fs=16px fw=400 color=ink bt=1px solid line p=18px 0px 0px gap=16px 14px «DE Pontos PARA Benefício»
+  .grade .bx-rotulo | 149x15 ff=mono fs=10px fw=400 ls=1px tt=uppercase color=grey «DE»
+  .grade b | 149x18 ff=archivo fs=14px fw=700 lh=18.2px ls=-0.14px color=ink «Pontos»
+  .cartao .lead | 311x96 ff=archivo fs=16px fw=400 lh=24px color=grey «Compre pontos, envie par»
+  .cartao > .bx-perf | 345x2 ff=archivo fs=16px fw=400 color=ink bt=2px dashed line «»
+  .canhoto | 343x223 ff=archivo fs=16px fw=400 color=ink p=20px 20px 22px gap=18px «PASSAGEIRO Você PORTÃO C»
+  .canhoto .dados | 303x37 ff=archivo fs=16px fw=400 color=ink gap=10px «PASSAGEIRO Você PORTÃO C»
+  .canhoto .dados .bx-rotulo | 71x15 ff=mono fs=10px fw=400 ls=1px tt=uppercase color=grey «PASSAGEIRO»
+  .canhoto .dados b | 71x18 ff=archivo fs=14px fw=700 lh=18.2px ls=-0.14px color=ink «Você»
+  .canhoto .cta | 303x49 ff=archivo fs=16px fw=700 color=ink bg=NEON r=12px p=16px «Começar agora»
+  .canhoto .ja | 303x17 ff=archivo fs=15px fw=400 color=ink «Já tenho conta · Entrar »
+  .canhoto .bx-barcode | 303x36 ff=archivo fs=16px fw=400 color=ink «»
+  .rota .secao-rotulo | 343x20 ff=mono fs=13px fw=400 ls=1.04px tt=uppercase color=grey «ROTA · COMO FUNCIONA»
+  .escala | 343x139 ff=archivo fs=16px fw=400 color=ink p=0px 0px 30px gap=6px «ESCALA 01 · COMPRAR Comp»
+  .escala .n | 343x18 ff=mono fs=12px fw=400 lh=18px ls=0.48px tt=uppercase color=grey p=0px 0px 0px 38px «ESCALA 01 · COMPRAR»
+  .escala .acao | 343x34 ff=archivo fs=16px fw=400 color=ink gap=14px «Compre»
+  .escala .ponto | 24x24 ff=archivo fs=16px fw=400 color=ink bg=ink bt=2px solid ink bb=2px solid ink r=50% «»
+  .escala .t | 159x34 ff=archivo fs=34px fw=800 lh=34px ls=-0.68px color=ink bg=bg p=0px 14px «Compre»
+  .escala .d | 343x45 ff=archivo fs=15px fw=400 lh=22.5px color=grey p=0px 0px 0px 38px «Pacotes ou valor livre. »
+  .pacotes h2 | 270x68 ff=archivo fs=34px fw=800 lh=34px ls=-1.02px color=ink «Escolha o seu ponto de p»
+  .pacotes-cab a | 88x20 ff=archivo fs=16px fw=400 color=ink bb=2px solid ink «Valor livre →»
+  .bilhete | 343x158 ff=archivo fs=14px fw=400 color=ink bg=surf bt=2px solid rgba(0, 0, 0, 0) bb=2px solid rgba(0, 0, 0, 0) r=18px «BX · START CARTÃO OU TRA»
+  .bilhete .miolo-b | 281x154 ff=archivo fs=14px fw=400 color=ink p=16px 16px 14px gap=8px «BX · START CARTÃO OU TRA»
+  .bilhete .cab | 249x34 ff=mono fs=11px fw=400 tt=uppercase color=grey gap=2px «BX · START CARTÃO OU TRA»
+  .bilhete .pts | 249x34 ff=archivo fs=34px fw=800 lh=34px ls=-0.68px color=ink «2.000 pts»
+  .bilhete .pts small | 27x20 ff=archivo fs=18px fw=600 lh=18px ls=-0.68px color=grey «pts»
+  .bilhete .bx-rotulo | 249x16 ff=mono fs=11px fw=400 ls=1.1px tt=uppercase color=grey «TARIFA»
+  .bilhete [data-price] | 249x24 ff=archivo fs=22px fw=700 lh=24.2px ls=-0.22px color=ink «R$ 180,00»
+  .bilhete .bx-perf | 2x154 ff=archivo fs=14px fw=400 color=ink «»
+  .bilhete .canhoto-b | 56x154 ff=archivo fs=14px fw=400 color=ink bg=surf p=14px 0px «»
+  .bilhete .selo-b | 30x30 ff=archivo fs=14px fw=400 color=ink bt=2px solid ink bb=2px solid ink r=50% «»
+  .recibo | 343x609 ff=archivo fs=16px fw=400 color=ink «EXTRATO DA SUA COMPRA PA»
+  .recibo .corpo | 343x585 ff=mono fs=13px fw=400 color=ink bg=surf p=22px 16px gap=14px «EXTRATO DA SUA COMPRA PA»
+  .recibo .cabeca | 347x91 ff=mono fs=13px fw=400 color=ink bg=ink p=18px 18px 16px gap=10px «EXTRATO DA SUA COMPRA»
+  .recibo .cabeca span | 174x17 ff=mono fs=12px fw=400 ls=0.96px color=barfg «EXTRATO DA SUA COMPRA»
+  .recibo .bx-leader | 311x20 ff=mono fs=13px fw=400 color=ink gap=8px «PACOTE PLUS ★»
+  .recibo .bx-leader > i | 200x2 ff=mono fs=13px fw=400 color=ink bb=2px dotted rgb(185, 182, 174) «»
+  .recibo .total | 311x36 ff=mono fs=13px fw=400 color=ink gap=12px «TOTAL R$ 470,00»
+  .recibo .total b | 179x36 ff=archivo fs=36px fw=900 lh=36px ls=-1.08px color=ink «R$ 470,00»
+  .recibo .faixa | 335x40 ff=mono fs=13px fw=400 color=ink bg=NEON p=10px 12px «PONTOS NA CONTA 5.500»
+  .recibo .nota | 311x54 ff=mono fs=12px fw=400 lh=18px color=grey «Os pontos do pacote já i»
+  .recibo .via | 311x16 ff=mono fs=11px fw=400 ls=0.88px tt=uppercase color=grey gap=12px «VIA DO PASSAGEIRO»
+  .recibo .comprar | 311x56 ff=archivo fs=17px fw=700 tt=uppercase color=surf bg=ink p=18px «COMPRAR 5.500 PTS →»
+  .recibo .bx-zig | 343x12 ff=archivo fs=16px fw=400 color=ink «»
+  .painel | 343x1144 ff=archivo fs=16px fw=400 color=ink bg=surf bt=1px solid line bb=1px solid line r=24px p=20px 16px sh=sh gap=22px «PAINEL DE PARTIDAS · MAP»
+  .painel h2 | 309x68 ff=archivo fs=34px fw=800 lh=34px ls=-1.02px color=ink «Seus pontos, o mundo int»
+  .painel .secao-rotulo | 309x20 ff=mono fs=13px fw=400 ls=1.04px tt=uppercase color=grey «PAINEL DE PARTIDAS · MAP»
+  .grande b | 63x44 ff=archivo fs=44px fw=900 lh=44px ls=-1.32px color=ink bg=NEON p=0px 3.52px «27»
+  .grande span | 113x16 ff=archivo fs=15px fw=400 color=ink «cidades no mapa»
+  .legenda | 309x42 ff=mono fs=12px fw=400 color=grey gap=8px 16px «Postos Supermercados Red»
+  .cinema-frame | 309x309 ff=archivo fs=16px fw=400 color=ink bg=paper bt=1px solid line bb=1px solid line r=18px «»
+  .hint | 309x34 ff=mono fs=12px fw=400 lh=16.8px color=grey «Arraste para girar · cli»
+  .quadro | 309x451 ff=mono fs=14px fw=400 color=paper bg=ink r=18px «DESTINO PAÍS SITUAÇÃO SÃ»
+  .quadro .cab | 309x47 ff=mono fs=11px fw=400 ls=0.88px tt=uppercase color=inkMut bb=1px solid ink2 p=18px 16px 12px gap=12px «DESTINO PAÍS SITUAÇÃO»
+  .quadro .linha | 309x45 ff=mono fs=13px fw=400 tt=uppercase color=paper bb=1px solid rgb(28, 31, 37) p=12px 16px gap=12px «SÃO PAULO Brasil»
+  .quadro .linha .pais | 109x17 ff=mono fs=12px fw=400 color=inkMut «Brasil»
+  .quadro .sit | 8x8 ff=mono fs=11px fw=400 ls=0.66px tt=uppercase color=NEON gap=8px «»
+  .cidade-info | 309x104 ff=mono fs=13px fw=400 color=paper bg=rgb(17, 19, 24) bt=1px solid ink2 p=14px 16px 16px gap=8px «Clique numa cidade, na l»
+  .bx-convite | 375x1149 ff=archivo fs=16px fw=400 color=ink «CRIAR CONTA · SEM MENSAL»
+  .bx-convite-rotulo | 343x17 ff=mono fs=13px fw=400 lh=16.9px ls=1.04px tt=uppercase color=grey «CRIAR CONTA · SEM MENSAL»
+  .bx-convite h2 | 343x64 ff=archivo fs=32px fw=800 lh=32px ls=-0.96px color=ink «Inicie sua aventura com »
+  .bx-convite-topo p | 343x48 ff=archivo fs=16px fw=400 lh=24px color=grey «Abra sua conta em poucos»
+  .bx-convite-card | 343x176 ff=archivo fs=16px fw=400 color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=18px gap=10px «Cadastro em minutos Crie»
+  .bx-convite-ico | 44x44 ff=archivo fs=16px fw=400 color=ink bg=NEON r=12px «»
+  .bx-convite-card h3 | 305x23 ff=archivo fs=20px fw=800 lh=23px ls=-0.2px color=ink «Cadastro em minutos»
+  .bx-convite-card p | 305x45 ff=archivo fs=15px fw=400 lh=22.5px color=grey «Crie sua conta com e-mai»
+  .bx-convite-acao | 343x210 ff=archivo fs=16px fw=400 color=paper bg=ink r=18px p=22px 20px gap=20px 32px «Pronto para embarcar? Su»
+  .bx-convite-acao b | 303x26 ff=archivo fs=24px fw=800 ls=-0.24px color=rgb(255, 255, 255) «Pronto para embarcar?»
+  .bx-convite-criar | 303x52 ff=archivo fs=16px fw=700 color=ink bg=NEON r=8px p=0px 26px gap=10px «Criar conta →»
+  .bx-convite-entrar | 151x16 ff=archivo fs=15px fw=400 color=paper «Já tenho conta · Entrar»
+  footer.footer | 375x891 ff=archivo fs=16px fw=400 color=paper bg=ink «Um programa de recompens»
+  .bx-foot-corpo | 375x717 ff=archivo fs=15px fw=400 lh=22.5px color=paper bg=ink p=28px 16px 20px gap=22px 16px «Um programa de recompens»
+  .bx-foot-marca img | 97x80 ff=archivo fs=15px fw=400 lh=22.5px color=rgb(0, 0, 238) «»
+  .bx-foot-marca p | 320x90 ff=archivo fs=15px fw=400 lh=22.5px color=inkMut «Um programa de recompens»
+  .bx-foot-col h4 | 343x16 ff=mono fs=12px fw=400 lh=15.6px ls=0.96px color=paper «PRODUTO»
+  .bx-foot-col a | 108x21 ff=archivo fs=15px fw=400 lh=21px color=inkMut «Comprar pontos»
+  .bx-foot-base | 375x174 ff=mono fs=12px fw=400 lh=18px color=inkMut bg=ink p=0px 16px 24px gap=24px «© 2026 BlaXx Pontos Os p»
+  .bx-foot-base .bx-barcode | 200x28 ff=mono fs=12px fw=400 lh=18px color=inkMut «»
+  .bx-foot-aviso | 343x56 ff=archivo fs=12px fw=400 lh=18.6px color=inkMut «Os pontos BlaXx não são »
+===== dash
+  main | 343x3221 ff=archivo fs=15px fw=400 lh=23.25px color=ink p=20px 0px 0px «OLÁ, CLIENTE Bom te ver »
+  .page-head | 343x132 ff=archivo fs=15px fw=400 lh=23.25px color=ink p=10px 0px «OLÁ, CLIENTE Bom te ver »
+  .page-head .kicker | 121x35 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=ink bg=rgb(238, 247, 226) bt=1px solid NEON bb=1px solid NEON r=999px p=8px 14px gap=8px «OLÁ, CLIENTE»
+  .page-head h1 | 343x30 ff=archivo fs=30px fw=800 fst=88% lh=30px ls=-0.9px color=ink «Bom te ver de volta.»
+  .page-head p | 343x23 ff=archivo fs=15px fw=400 lh=23.25px color=grey «Você está a 100.000 pts »
+  .stats-card | 343x437 ff=archivo fs=15px fw=400 lh=23.25px color=paper bg=ink r=18px p=20px sh=sh «SALDO DE PONTOS PLANO PL»
+  .stats-card .label | 128x19 ff=mono fs=12px fw=400 lh=18.6px ls=1.2px tt=uppercase color=inkMut «SALDO DE PONTOS»
+  .stats-card .pill | 100x44 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=ink bg=NEON r=999px p=6px 12px «PLANO PLUS»
+  .big-num | 303x41 ff=archivo fs=41.25px fw=800 lh=41.25px ls=-1.65px color=paper gap=2px 8px «— pontos»
+  .big-num small | 42x16 ff=archivo fs=16px fw=600 lh=16px ls=-1.65px color=inkMut «pontos»
+  .grid-kpi | 303x88 ff=archivo fs=15px fw=400 lh=23.25px color=paper bt=1px solid ink2 p=18px 0px 0px gap=14px 12px «DISPONÍVEIS — PENDENTES »
+  .grid-kpi > div > div | 93x17 ff=mono fs=11px fw=400 lh=17.05px ls=1.1px tt=uppercase color=inkMut «DISPONÍVEIS»
+  .grid-kpi > div > div + div | 93x31 ff=archivo fs=20px fw=700 lh=31px ls=-0.4px color=paper «—»
+  .stats-card .actions .button | 303x49 ff=archivo fs=15px fw=700 lh=23.25px color=ink bg=NEON r=12px p=13px 20px gap=10px «+ Comprar pontos»
+  .stats-card .actions .button + .button | 303x49 ff=archivo fs=15px fw=700 lh=23.25px color=ink bg=surf r=12px p=13px 20px gap=10px «Resgatar →»
+  .card.lime | 343x298 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=NEON bt=1px solid rgba(0, 0, 0, 0) bb=1px solid rgba(0, 0, 0, 0) r=18px p=22px sh=sh «PRÓXIMO NÍVEL Plano Prim»
+  .card.lime .kicker | 129x35 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=NEON bg=ink bt=1px solid ink bb=1px solid ink r=999px p=8px 14px gap=8px «PRÓXIMO NÍVEL»
+  .card.lime h3 | 297x26 ff=archivo fs=17px fw=700 lh=26.35px ls=-0.255px color=ink «Plano Prime»
+  .progress | 297x12 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=paper bt=1px solid line bb=1px solid line r=999px «»
+  .card.lime .button.dark | 119x49 ff=archivo fs=15px fw=700 lh=23.25px color=surf bg=ink r=12px p=13px 20px gap=10px «Acelerar →»
+  .section-head h2 | 81x22 ff=archivo fs=22px fw=800 lh=22.44px ls=-0.66px color=ink «Atalhos»
+  .card.compact | 166x153 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=16px «Extrato Veja todos os mo»
+  .mark-glyph | 36x36 ff=archivo fs=16px fw=700 lh=24.8px color=ink bg=NEON r=12px «»
+  .mark-glyph svg | 20x20 ff=archivo fs=16px fw=700 lh=24.8px color=ink «»
+  .card.compact h3 | 132x25 ff=archivo fs=16px fw=700 lh=24.8px ls=-0.24px color=ink «Extrato»
+  .card.compact p | 132x40 ff=archivo fs=13px fw=400 lh=20.15px color=grey «Veja todos os movimentos»
+  .campaign-card | 343x261 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px sh=sh «+50% BÔNUS · 8 DIAS Supe»
+  .campaign-cover | 341x131 ff=archivo fs=15px fw=400 lh=23.25px color=rgb(255, 255, 255) bg=ink r=12px p=22px «+50% BÔNUS · 8 DIAS Supe»
+  .campaign-cover .kicker | 175x35 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=ink bg=NEON bt=1px solid rgba(0, 0, 0, 0) bb=1px solid rgba(0, 0, 0, 0) r=999px p=8px 14px gap=8px «+50% BÔNUS · 8 DIAS»
+  .campaign-body | 341x128 ff=archivo fs=15px fw=400 lh=23.25px color=ink p=18px «Ganhe 50% extra em ponto»
+  .status.ativo | 77x31 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=rgb(31, 107, 20) bg=rgb(228, 245, 218) bt=1px solid line bb=1px solid line r=999px p=6px 11px gap=6px «● ATIVA»
+  .button.secondary.sm | 104x48 ff=archivo fs=13px fw=700 lh=20.15px color=ink bg=surf bt=1px solid line bb=1px solid line r=12px p=9px 14px gap=10px «Ver todas →»
+  .table | 343x76 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px sh=sh «Erro: Failed to fetch»
+  .table th | 0x0 ff=mono fs=11px fw=700 lh=17.05px ls=0.88px tt=uppercase color=grey bb=1px solid line p=14px 18px «Data»
+  .table td | 311x34 ff=archivo fs=14px fw=400 lh=21.7px color=rgb(168, 52, 23) p=6px 0px gap=12px «Erro: Failed to fetch»
+  .market-card | 301x160 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=24px gap=14px «Rápido iFood R$ 50 5.000»
+  .partner-card | 301x78 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=14px gap=14px «Supermercados Compras do»
+  .partner-logo | 48x48 ff=archivo fs=16px fw=700 lh=24.8px color=ink bg=NEON r=12px p=4px «»
+  .bx-tabbar | 375x72 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=ink bt=1px solid ink2 p=6px 4px «INÍCIO CARTEIRA COMPRAR »
+  .bx-tabbar a | 73x59 ff=archivo fs=15px fw=400 lh=23.25px color=NEON r=10px p=4px 2px gap=4px «INÍCIO»
+  .bx-tabbar a.ativa | 73x59 ff=archivo fs=15px fw=400 lh=23.25px color=NEON r=10px p=4px 2px gap=4px «INÍCIO»
+  .bx-tabbar svg | 30x30 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=NEON r=8px p=5px «»
+  .bx-tabbar span | 43x17 ff=mono fs=11px fw=400 lh=17.05px ls=0.44px tt=uppercase color=NEON «INÍCIO»
+  .topbar[data-bx-comum] .nav | 375x60 ff=archivo fs=15px fw=400 lh=23.25px color=paper p=0px 16px gap=10px «BlaXx C»
+  .bx-sino | 42x42 ff=archivo fs=15px fw=400 lh=20px color=ink bg=NEON r=999px «»
+  .bx-chip | 42x42 ff=archivo fs=15px fw=600 lh=20px color=paper bt=1px solid ink2 bb=1px solid ink2 r=999px p=0px 4px gap=8px «C»
+  .bx-chip-av | 32x32 ff=archivo fs=14px fw=700 lh=14px color=ink bg=NEON r=50% «C»
+  footer.footer | 375x960 ff=archivo fs=15px fw=400 lh=23.25px color=paper bg=ink p=0px 0px 66px «Um programa de recompens»
+===== drawer
+  .bxnav-drawer | 330x812 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=surf p=14px 14px 88px gap=2px «× CONTA Início Carteira »
+  .bxnav-fechar | 44x44 ff=archivo fs=24px fw=400 lh=24px color=ink bg=surf bt=1px solid line bb=1px solid line r=999px «×»
+  .bxnav-grupo | 273x17 ff=mono fs=11px fw=400 lh=17.05px ls=0.99px tt=uppercase color=grey «CONTA»
+  .bxnav-drawer a | 301x48 ff=archivo fs=16px fw=600 lh=24.8px color=surf bg=ink r=10px p=12px 14px «Início»
+  .bxnav-drawer a[aria-current] | 301x48 ff=archivo fs=16px fw=600 lh=24.8px color=surf bg=ink r=10px p=12px 14px «Início»
+  .bxnav-cta | 301x48 ff=archivo fs=16px fw=600 lh=24.8px color=ink bg=NEON r=10px p=12px 14px «Sair»
+  .bxnav-scrim | 375x812 ff=archivo fs=15px fw=400 lh=23.25px color=ink bg=rgba(10, 11, 14, 0.45) «»
+===== parc
+  .bx-cartao | 331x842 ff=archivo fs=16px fw=400 color=ink bg=surf r=24px sh=sh «PAINEL DE PARTIDAS · PAR»
+  .bx-cartao-miolo | 331x611 ff=archivo fs=16px fw=400 color=ink p=22px 16px 24px gap=20px «PAINEL DE PARTIDAS · PAR»
+  .bx-cartao-topo | 299x36 ff=mono fs=11px fw=400 ls=1.1px tt=uppercase color=grey gap=4px 12px «PAINEL DE PARTIDAS · PAR»
+  .bx-cartao-titulo | 299x204 ff=archivo fs=55.5px fw=900 fst=80% lh=49.95px ls=-1.665px color=ink «Parceiros BlaXx. Escolha»
+  .bx-cartao-titulo mark | 218x96 ff=archivo fs=36.63px fw=900 fst=80% lh=46.8864px ls=-1.665px color=ink bg=NEON p=4.7619px 6.5934px «Escolha o seu destino.»
+  .pz-busca | 299x169 ff=archivo fs=16px fw=400 color=ink bt=1px solid line p=24px 0px 0px gap=12px «DESTINO · NOME DA MARCA »
+  .pz-busca-campo | 299x80 ff=archivo fs=16px fw=400 color=ink gap=8px «DESTINO · NOME DA MARCA »
+  .pz-busca-campo .bx-rotulo | 299x16 ff=mono fs=11px fw=400 ls=1.1px tt=uppercase color=grey «DESTINO · NOME DA MARCA »
+  #search | 299x56 ff=archivo fs=18px fw=600 ls=-0.18px color=ink bg=paper bt=1px solid line bb=1px solid line r=12px p=0px 18px 0px 58px «»
+  .pz-busca-linha .bx-ico | 40x40 ff=archivo fs=16px fw=400 color=ink bg=NEON r=12px «»
+  .pz-favbtn | 299x52 ff=archivo fs=15px fw=600 color=ink bg=surf bt=1px solid line bb=1px solid line r=12px p=0px 18px 0px 10px gap=10px «Meus favoritos 0»
+  .bx-cartao-lead | 299x96 ff=archivo fs=16px fw=400 lh=24px color=grey «Busque pela marca ou pel»
+  .bx-cartao-canhoto | 331x229 ff=archivo fs=16px fw=400 color=ink p=20px 20px 22px gap=18px «SEUS PONTOS Indisponível»
+  .bx-cartao-dados | 0x0 ff=archivo fs=16px fw=400 color=ink gap=10px «PassageiroVocê PortãoPar»
+  .bx-cartao-cta | 0x0 ff=archivo fs=16px fw=700 color=ink bg=NEON r=12px p=16px «Criar conta»
+  .bx-cartao-ja | 0x0 ff=archivo fs=15px fw=400 color=ink «Já tenho conta · Entrar »
+  .bx-secao-rotulo | 315x20 ff=mono fs=13px fw=400 ls=1.04px tt=uppercase color=grey «PAINEL DE PARTIDAS · LIS»
+  .bx-titulo-secao | 315x34 ff=archivo fs=34px fw=800 lh=34px ls=-1.02px color=ink «Todos os parceiros.»
+  .bx-painel-grande b | 91x44 ff=archivo fs=44px fw=900 lh=44px ls=-1.32px color=ink bg=NEON p=0px 3.52px «266»
+  .bx-painel-topo | 331x162 ff=archivo fs=16px fw=400 lh=24px color=ink bb=2px dashed rgb(185, 182, 174) p=0px 0px 24px gap=24px 40px «PAINEL DE PARTIDAS · LIS»
+  .pz-pills | 331x178 ff=archivo fs=16px fw=400 lh=24px color=ink gap=6px «TODOS 266 FAVORITOS 0 PO»
+  .pz-pill | 95x40 ff=mono fs=11px fw=400 lh=11px ls=0.88px tt=uppercase color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=8px p=0px 12px gap=8px «TODOS 266»
+  .pz-pill.on | 95x40 ff=mono fs=11px fw=400 lh=11px ls=0.88px tt=uppercase color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=8px p=0px 12px gap=8px «TODOS 266»
+  .pz-pill__n | 23x11 ff=mono fs=11px fw=400 lh=11px ls=0.88px tt=uppercase color=ink «266»
+  .pz-pill--mais | 171x40 ff=mono fs=11px fw=400 lh=11px ls=0.88px tt=uppercase color=ink bg=surf bt=1px dashed rgb(185, 182, 174) bb=1px dashed rgb(185, 182, 174) r=8px p=0px 12px gap=8px «MAIS CATEGORIAS +30»
+  .pz-status | 331x18 ff=mono fs=12px fw=400 lh=18px ls=0.96px tt=uppercase color=grey «266 PARCEIROS · MOSTRAND»
+  .pz-grid | 331x1608 ff=archivo fs=16px fw=400 lh=24px color=ink gap=10px «ACER ELETRÔNICOS ADCOS B»
+  .pz-card | 331x69 ff=archivo fs=16px fw=400 lh=24px color=ink bg=surf r=18px «ACER ELETRÔNICOS»
+  .pz-card__link | 273x69 ff=archivo fs=16px fw=400 lh=24px color=ink p=14px gap=14px «ACER ELETRÔNICOS»
+  .pz-card__logo | 40x40 ff=archivo fs=16px fw=400 lh=24px color=ink bg=NEON r=12px «»
+  .pz-card__name | 84x20 ff=archivo fs=17px fw=800 lh=19.55px ls=-0.17px color=ink «ACER»
+  .pz-card__cat | 84x15 ff=mono fs=11px fw=400 lh=15.4px ls=0.88px tt=uppercase color=grey «ELETRÔNICOS»
+  .pz-card__buy | 0x0 ff=archivo fs=14px fw=700 lh=21px color=ink «Ver parceiro →»
+  .pz-card .bx-perf | 2x69 ff=archivo fs=16px fw=400 lh=24px color=ink «»
+  .pz-fav | 56x69 ff=archivo fs=13.3333px fw=400 color=ink bg=surf gap=10px «»
+  .pz-fav .bx-vert | 0x0 ff=mono fs=10px fw=400 ls=2px tt=uppercase color=grey «Favoritar»
+  .pz-fav .bx-ico | 30x30 ff=archivo fs=13.3333px fw=400 color=ink bg=NEON r=8px «»
+  .pz-mais | 314x52 ff=archivo fs=16px fw=700 color=paper bg=ink r=12px p=0px 28px gap=10px «Mostrar mais parceiros +»
+  .pz-slide | 331x275 ff=archivo fs=16px fw=400 color=ink bg=surf bt=2px solid rgba(0, 0, 0, 0) bb=2px solid rgba(0, 0, 0, 0) r=18px «BX · CAMPANHA ATIVA 01 D»
+  .bx-bilhete-cab | 233x34 ff=mono fs=11px fw=400 tt=uppercase color=grey gap=2px «BX · CAMPANHA ATIVA 01 D»
+  .bx-bilhete-pts | 233x34 ff=archivo fs=34px fw=800 lh=34px ls=-0.68px color=ink «+5.000 pts ao concluir»
+  .bx-bilhete-canhoto | 56x271 ff=archivo fs=16px fw=400 color=ink bg=NEON p=14px 0px «»
+  .pz-banner__dots button | 28x10 ff=archivo fs=13.3333px fw=400 bg=ink r=999px «»
+  .pz-banner__arrow | 44x44 ff=archivo fs=13.3333px fw=400 color=ink bg=NEON r=12px «»
+  .bx-recibo | 331x559 ff=archivo fs=16px fw=400 color=ink «RESUMO DA LISTA PARCEIRO»
+  .bx-recibo-corpo | 331x535 ff=mono fs=13px fw=400 color=ink bg=surf p=22px 16px gap=14px «RESUMO DA LISTA PARCEIRO»
+  .bx-recibo-cabeca | 331x91 ff=mono fs=13px fw=400 color=ink bg=ink p=18px 16px 16px gap=10px «RESUMO DA LISTA»
+  .bx-recibo-total b | 69x36 ff=archivo fs=36px fw=900 lh=36px ls=-1.08px color=ink «266»
+  .bx-recibo-faixa | 323x40 ff=mono fs=13px fw=400 color=ink bg=NEON p=10px 12px «REDE EM EXPANSÃO»
+  .bx-recibo-acao | 299x56 ff=archivo fs=17px fw=700 tt=uppercase color=surf bg=ink p=18px «VER A LISTA →»
+  .bx-escala-n | 166x36 ff=mono fs=12px fw=400 lh=18px ls=0.48px tt=uppercase color=grey p=0px 0px 0px 38px «ESCALA 01 · BUSCAR»
+  .bx-escala-t | 142x68 ff=archivo fs=34px fw=800 lh=34px ls=-0.68px color=ink bg=bg p=0px 14px «Busque»
+  .bx-escala-d | 166x90 ff=archivo fs=15px fw=400 lh=22.5px color=grey p=0px 0px 0px 38px «Pelo nome da marca ou pe»
+  .bx-escala-ponto | 24x24 ff=archivo fs=16px fw=400 color=ink bg=ink bt=2px solid ink bb=2px solid ink r=50% «»
+===== dp
+  .dp-farelo | 343x44 ff=mono fs=11px fw=400 lh=15.4px ls=0.88px tt=uppercase color=grey gap=6px 10px «INÍCIO / PARCEIROS / FAR»
+  .dp-marca | 311x52 ff=archivo fs=16px fw=400 color=ink gap=12px «CATEGORIA Farmácias»
+  .dp-marca .bx-ico | 52x52 ff=archivo fs=16px fw=400 color=ink bg=NEON r=12px «»
+  .dp-nome | 311x50 ff=archivo fs=55.5px fw=900 fst=80% lh=49.95px ls=-1.665px color=ink «FarmaPlus»
+  .dp-bilhete | 343x231 ff=archivo fs=16px fw=400 color=ink bg=surf bt=2px solid rgba(0, 0, 0, 0) bb=2px solid rgba(0, 0, 0, 0) r=18px «BX · VOUCHER POPULAR Com»
+  .dp-bilhete-nome | 249x44 ff=archivo fs=19px fw=800 lh=21.85px ls=-0.19px color=ink «Combo medicamento básico»
+  .dp-bilhete .bx-bilhete-pts | 249x34 ff=archivo fs=34px fw=800 lh=34px ls=-0.68px color=ink «353 pts»
+  .dp-bilhete-dados | 249x37 ff=archivo fs=16px fw=400 color=ink gap=10px 20px «VALIDADE DO VOUCHER 90 d»
+  .dp-bilhete-ir | 249x17 ff=archivo fs=15px fw=700 color=ink «Ver benefício →»
+  .dp-bilhete .bx-bilhete-canhoto | 56x227 ff=archivo fs=16px fw=400 color=ink bg=surf p=14px 0px «»
+  .dp-fonte | 343x35 ff=mono fs=11px fw=400 lh=17.6px ls=0.66px tt=uppercase color=grey «FONTE: REGULAMENTO, §03 »
+===== login
+  .auth-wrap | 375x593 ff=archivo fs=15px fw=400 lh=22.5px color=ink p=16px 16px 24px «Bem-vindo de volta. Entr»
+  .card.auth | 343x553 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=24px 20px sh=sh «Bem-vindo de volta. Entr»
+  .card.auth h1 | 301x30 ff=archivo fs=30px fw=900 fst=88% lh=30px ls=-0.6px color=ink «Bem-vindo de volta.»
+  .card.auth .sub | 301x23 ff=archivo fs=15px fw=400 lh=23.25px color=grey «Entre para acessar seus »
+  label[for=email] | 301x17 ff=mono fs=11px fw=400 lh=16.5px ls=1.1px tt=uppercase color=grey «E-MAIL OU CPF»
+  #email | 301x48 ff=archivo fs=16px fw=500 color=ink bg=surf bt=1px solid line bb=1px solid line r=12px p=13px 14px «»
+  .row | 301x44 ff=archivo fs=13px fw=400 lh=19.5px color=ink gap=8px 12px «Lembrar de mim Esqueci a»
+  #btnLogin | 301x48 ff=archivo fs=15px fw=700 color=surf bg=ink r=8px p=13px 22px gap=8px «Entrar →»
+  .auth-divider | 301x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey gap=14px «OU»
+  #g-signin-btn | 301x44 ff=archivo fs=15px fw=400 lh=22.5px color=ink «Fazer Login com o Google»
+  .card.auth p:last-child | 301x19 ff=archivo fs=12px fw=400 lh=18.6px color=grey «Protegido por verificaçã»
+===== cad
+  .stepper | 301x6 ff=archivo fs=15px fw=400 lh=22.5px color=ink gap=8px «»
+  .stepper .seg | 95x6 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=NEON r=999px «»
+  .stepper .seg.on | 95x6 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=NEON r=999px «»
+  .welcome | 208x32 ff=mono fs=12px fw=700 lh=18px color=ink bg=NEON r=999px p=7px 14px gap=8px «PONTOS DE BOAS-VINDAS»
+  .welcome .bx-ico | 18x18 ff=mono fs=12px fw=700 lh=18px color=ink bg=NEON r=12px «»
+  .step-count | 301x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey «PASSO 1 DE 3»
+  .step.on h1 | 301x30 ff=archivo fs=30px fw=900 fst=88% lh=30px ls=-0.6px color=ink «Quem é você?»
+  .nav-row .btn | 301x48 ff=archivo fs=15px fw=700 color=surf bg=ink r=8px p=13px 22px gap=8px «Continuar →»
+===== extrato
+  .page-head .eyebrow | 79x29 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=ink bg=paper bt=1px solid line bb=1px solid line r=999px p=5px 12px gap=7px «EXTRATO»
+  .page-head h1 | 295x30 ff=archivo fs=30px fw=800 fst=88% lh=30px ls=-0.9px color=ink «Cada ponto, rastreado.»
+  .sum-row | 295x187 ff=archivo fs=15px fw=400 lh=22.5px color=ink gap=10px «ENTRADAS · MÊS +0 SAÍDAS»
+  .card.sum | 143x89 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=14px 16px sh=sh «ENTRADAS · MÊS +0»
+  .sum__label | 109x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey «ENTRADAS · MÊS»
+  .sum__val | 109x36 ff=mono fs=24px fw=700 lh=36px ls=-0.48px color=rgb(31, 107, 20) «+0»
+  .tabs | 295x56 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=999px p=5px gap=6px «Tudo Entradas Saídas»
+  .tabs button | 90x44 ff=archivo fs=13.5px fw=700 color=surf bg=ink r=999px p=8px 10px «Tudo»
+  .tabs button.on | 90x44 ff=archivo fs=13.5px fw=700 color=surf bg=ink r=999px p=8px 10px «Tudo»
+  .search | 295x50 ff=archivo fs=15px fw=400 lh=22.5px color=grey bg=surf bt=1px solid line bb=1px solid line r=999px p=2px 16px gap=8px «»
+  #q | 238x44 ff=archivo fs=16px fw=500 color=ink r=12px p=1px 2px «»
+  .empty | 295x89 ff=archivo fs=15px fw=400 lh=22.5px color=grey bg=surf bt=1px dashed line bb=1px dashed line r=18px p=32px 18px sh=sh «Nenhum movimento encontr»
+===== carteira
+  .card--dark.balance | 295x350 ff=archivo fs=15px fw=400 lh=22.5px color=paper bg=ink bt=1px solid ink bb=1px solid ink r=18px p=22px 18px sh=sh gap=18px «SALDO TOTAL 32.480 Plano»
+  .wallet__eyebrow | 86x16 ff=mono fs=11px fw=400 lh=16.5px ls=1.1px tt=uppercase color=inkMut «SALDO TOTAL»
+  .balance__num | 257x41 ff=mono fs=45px fw=700 lh=40.5px ls=-1.35px color=NEON «32.480»
+  .balance__brl | 257x45 ff=archivo fs=15px fw=400 lh=22.5px color=inkMut «Plano Plus · próximo nív»
+  .balance__actions .btn | 257x49 ff=archivo fs=15px fw=700 lh=22.5px color=ink bg=NEON r=8px p=13px 22px gap=8px «+ Comprar pontos»
+  .btn--ghost-dark | 257x51 ff=archivo fs=15px fw=700 lh=22.5px color=paper bt=1px solid rgba(244, 242, 236, 0.35) bb=1px solid rgba(244, 242, 236, 0.35) r=8px p=13px 22px gap=8px «Resgatar →»
+  .card.scard | 295x169 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=18px sh=sh «DISPONÍVEIS PRONTOS 32.4»
+  .scard__label | 84x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey «DISPONÍVEIS»
+  .chip | 77x44 ff=mono fs=11px fw=700 lh=16.5px ls=0.88px tt=uppercase color=ink bg=paper bt=1px solid line bb=1px solid line r=999px p=5px 11px gap=6px «PRONTOS»
+  .chip--ink | 100x44 ff=mono fs=11px fw=700 lh=16.5px ls=0.88px tt=uppercase color=NEON bg=ink bt=1px solid rgba(0, 0, 0, 0) bb=1px solid rgba(0, 0, 0, 0) r=999px p=5px 11px gap=6px «EM ANÁLISE»
+  .scard__val | 257x45 ff=mono fs=30px fw=700 lh=45px ls=-0.6px color=ink «32.480»
+  .expire__tag | 67x25 ff=mono fs=11px fw=700 lh=16.5px color=rgb(122, 90, 0) bg=rgba(122, 90, 0, 0.1) r=999px p=4px 10px «12 DIAS»
+  .chart | 257x150 ff=archivo fs=15px fw=400 lh=22.5px color=ink p=10px 0px 0px gap=8px «DEZ JAN FEV MAR ABR MAI»
+  .chart__bar | 34x53 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=line r=8px 8px 0px 0px «»
+  .expire | 257x93 ff=archivo fs=15px fw=400 lh=22.5px color=ink p=14px 0px gap=14px «800 pts Mercado Vivo · j»
+  .tile | 38x38 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=NEON r=12px «»
+===== resg
+  .bal-pill | 120x77 ff=archivo fs=15px fw=400 lh=22.5px color=paper bg=ink r=18px p=12px 18px gap=12px «SEUS PONTOS —»
+  .vtabs | 295x56 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=999px p=5px gap=6px «Catálogo Meus resgates»
+  .vtabs button | 139x44 ff=archivo fs=13.5px fw=700 color=NEON bg=ink r=999px p=10px 12px «Catálogo»
+  .vtabs button.on | 139x44 ff=archivo fs=13.5px fw=700 color=NEON bg=ink r=999px p=10px 12px «Catálogo»
+  .fchip | 72x44 ff=archivo fs=13px fw=700 color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=999px p=8px 16px «Todos»
+  .fchip.on | 72x44 ff=archivo fs=13px fw=700 color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=999px p=8px 16px «Todos»
+  .card.rw | 295x301 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=18px sh=sh «SORTEIO Sorteio R$ 1.000»
+  .rw__img | 257x130 ff=archivo fs=46px fw=400 lh=69px color=ink bg=rgba(89, 253, 39, 0.14) r=14px «SORTEIO»
+  .rw__cat | 70x25 ff=mono fs=11px fw=700 lh=16.5px ls=0.66px tt=uppercase color=ink bg=surf r=999px p=4px 9px «SORTEIO»
+  .rw__name | 257x23 ff=archivo fs=15.5px fw=800 lh=23.25px ls=-0.155px color=ink «Sorteio R$ 1.000 — BlaXx»
+  .rw__cost | 51x26 ff=mono fs=17px fw=700 lh=25.5px color=ink «59 pts»
+  .rw__foot .btn | 97x48 ff=archivo fs=15px fw=700 color=ink bg=NEON r=8px p=9px 16px gap=8px «Resgatar»
+  .afford | 257x17 ff=mono fs=11px fw=700 lh=16.5px color=rgb(154, 47, 21) gap=4px «Faltam 59 pts»
+===== camp
+  .card.camp | 295x274 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=18px sh=sh «Pacote Premium Compre o »
+  .camp__title | 257x29 ff=archivo fs=19px fw=900 lh=28.5px ls=-0.19px color=ink «Pacote Premium»
+  .camp__sub | 257x41 ff=archivo fs=13.5px fw=400 lh=20.25px color=grey «Compre o pacote Black e »
+  .camp__reward | 71x27 ff=mono fs=14px fw=700 lh=16.8px color=ink bg=NEON r=8px p=5px 10px «+5.000»
+  .camp__meta | 257x17 ff=mono fs=11.5px fw=400 lh=17.25px color=grey «Meta R$ 2.142 0%»
+  .bar | 257x12 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=paper bt=1px solid line bb=1px solid line r=999px «»
+  .bar__fill | 0x10 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=NEON r=999px «»
+  .time-tag : -
+  .camp__foot .btn | 119x48 ff=archivo fs=15px fw=700 color=ink bg=NEON r=8px p=9px 16px gap=8px «Participar →»
+===== notif
+  .nf-pill | 72x44 ff=archivo fs=13px fw=700 color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=999px p=8px 16px «Todas»
+  .nf-pill.on | 72x44 ff=archivo fs=13px fw=700 color=ink bg=NEON bt=1px solid NEON bb=1px solid NEON r=999px p=8px 16px «Todas»
+  .nf-readall | 295x48 ff=archivo fs=15px fw=700 color=ink bg=surf bt=1px solid line bb=1px solid line r=8px p=9px 16px gap=8px «Marcar todas como lidas»
+  .nf-list | 295x89 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px sh=sh «Não foi possível carrega»
+  .nf-empty | 293x87 ff=archivo fs=15px fw=400 lh=22.5px color=grey p=32px 18px «Não foi possível carrega»
+===== perfil
+  .card.me | 295x434 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=surf bt=1px solid line bb=1px solid line r=18px p=20px 18px sh=sh «C Cliente Teste teste@ex»
+  .me__av | 86x86 ff=archivo fs=34px fw=900 lh=51px color=ink bg=NEON r=50% «C»
+  .me__name | 167x36 ff=archivo fs=24px fw=900 lh=36px ls=-0.24px color=ink «Cliente Teste»
+  .me__mail | 116x20 ff=archivo fs=13px fw=400 lh=19.5px color=grey «teste@exemplo.test»
+  #mePlan | 77x44 ff=mono fs=11px fw=700 lh=16.5px ls=0.88px tt=uppercase color=NEON bg=ink bt=1px solid rgba(0, 0, 0, 0) bb=1px solid rgba(0, 0, 0, 0) r=999px p=5px 11px gap=6px «CLIENTE»
+  .me__stats | 257x82 ff=archivo fs=15px fw=400 lh=22.5px color=ink bt=1px solid line p=20px 0px 0px gap=10px «— PONTOS — PENDENTES — D»
+  .me__stats .v | 79x26 ff=mono fs=17px fw=700 lh=25.5px color=ink «—»
+  .me__stats .l | 79x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey «PONTOS»
+  .panel__title | 257x20 ff=archivo fs=20px fw=900 lh=20.4px ls=-0.2px color=ink «Dados pessoais»
+  .field .k | 99x17 ff=mono fs=11px fw=400 lh=16.5px ls=0.88px tt=uppercase color=grey «NOME COMPLETO»
+  .field .v | 99x22 ff=archivo fs=14.5px fw=600 lh=21.75px color=ink «Cliente Teste»
+  .switch | 46x26 ff=archivo fs=13.3333px fw=400 bg=NEON r=99px p=1px 6px «»
+  .switch.on | 46x26 ff=archivo fs=13.3333px fw=400 bg=NEON r=99px p=1px 6px «»
+  .pref .t | 195x21 ff=archivo fs=14px fw=700 lh=21px color=ink «Notificações por e-mail»
+  .pref .s | 195x38 ff=archivo fs=12.5px fw=400 lh=18.75px color=grey «Resgates, campanhas e po»
+===== cartao
+  .bcard | 295x218 ff=archivo fs=15px fw=400 lh=22.5px color=rgb(11, 11, 12) bg=rgb(212, 175, 55) bt=1px solid line bb=1px solid line r=18px p=20px 18px sh=sh «BLAXX Ouro 16.320pts Ric»
+  .bcard__brand | 40x17 ff=mono fs=11px fw=400 lh=16.5px ls=1.32px tt=uppercase color=rgb(11, 11, 12) «BLAXX»
+  .bcard__tier | 47x25 ff=mono fs=11px fw=700 lh=16.5px color=rgb(11, 11, 12) bg=rgba(255, 255, 255, 0.15) r=999px p=4px 10px «Ouro»
+  .bcard__num | 257x45 ff=mono fs=45px fw=700 lh=45px ls=-1.35px color=rgb(11, 11, 12) «16.320pts»
+  .bcard__member | 257x19 ff=archivo fs=12.5px fw=400 lh=18.75px color=rgb(11, 11, 12) «Ricardo · ID BLAXXDEMO»
+  .bcard__track | 257x8 ff=archivo fs=15px fw=400 lh=22.5px color=rgb(11, 11, 12) bg=rgba(255, 255, 255, 0.06) r=999px «»
+  .btn-wallet | 295x49 ff=archivo fs=15px fw=700 lh=22.5px color=ink bg=NEON r=8px p=13px 22px gap=8px «Apple Wallet · em breve»
+  .tier | 257x88 ff=archivo fs=15px fw=400 lh=22.5px color=ink bt=1px solid line bb=1px solid line r=12px p=12px gap=12px «Bronze 0+ pts Acesso ao »
+  .tier__dot | 16x16 ff=archivo fs=15px fw=400 lh=22.5px color=ink bg=rgb(205, 127, 50) bt=1px solid line bb=1px solid line r=50% «»
+  .tier__name | 51x23 ff=archivo fs=15px fw=700 lh=22.5px color=ink «Bronze»
+  .tier__min | 44x18 ff=mono fs=12px fw=400 lh=18px color=grey «0+ pts»
+  .tier__perks | 203x38 ff=archivo fs=12.5px fw=400 lh=18.75px color=grey «Acesso ao programa e ao »
+  .tier__tag | 52x23 ff=mono fs=11px fw=700 lh=16.5px color=ink bg=NEON r=999px p=3px 9px «ATUAL»

@@ -7,13 +7,13 @@
 //
 //  ⚠️ LEGADO — LEIA ANTES DE AUDITAR OU CORRIGIR ALGO AQUI.
 //
-//  `body` devolve `RewardsRoot()`. Todo o roteamento antigo virou `legacyBody`,
-//  que **ninguém referencia** — logo, estas telas NÃO estão no app:
+//  No iOS, `body` devolve `BXRaiz()` (redesenho "Embarque", 22/10/2026). O roteamento antigo é
+//  `legacyBody`, usado só fora do iOS — logo, no iPhone estas telas NÃO estão no app:
 //
 //      BuyView · RedeemView · MobileShell · HomeView · AuthenticatedShell
 //
-//  A árvore VIVA é `Rewards/`: RewardsRoot → RewardsShell → RewardsBuySheet /
-//  RewardsSellSheet / RewardsTransferSheet.
+//  A árvore VIVA é `Rewards/Telas/` + `Rewards/Embarque/`: BXRaiz → BXVisitanteCasca / BXCasca →
+//  BXRoteador → BXTelas<Grupo>. O mundo `Rewards*.swift` antigo está desativado (#if BX_LEGADO_REWARDS).
 //
 //  Isto já custou duas auditorias (20/07 e 01/08) avaliando `BuyView.swift` e
 //  `RedeemView.swift`: os "✅" delas não valiam para o app real, e o achado N1
@@ -30,11 +30,23 @@ struct ContentView: View {
     @State private var showLogin = false
 
     var body: some View {
-        // Entry swapped to the new native "BlaXx Rewards" experience. RewardsRoot
-        // is the mock login gate → RewardsShell. Reversible: use `RewardsShell()`
-        // to skip the gate, or restore `legacyBody` to bring back the old app.
-        RewardsRoot()
-            .preferredColorScheme(.light)
+        // Redesenho "Embarque" (22/10/2026): a raiz do app no iOS é `BXRaiz` (Rewards/Telas/Casca).
+        // O mundo antigo de `Rewards/` (RewardsRoot…) foi desativado com `#if BX_LEGADO_REWARDS` (D14).
+        // Outras plataformas (macOS/visionOS) continuam com o `legacyBody`.
+        #if os(iOS)
+        #if DEBUG
+        // `-BXGaleria` abre a galeria do design system (só DEBUG).
+        if BXDemo.galeria {
+            BXGaleria()
+        } else {
+            BXRaiz()
+        }
+        #else
+        BXRaiz()
+        #endif
+        #else
+        legacyBody
+        #endif
     }
 
     /// Original root routing — preserved for a one-line revert.

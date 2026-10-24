@@ -588,11 +588,14 @@ actor BlaxxAPI {
                                   body: body, as: OKResponse.self)
     }
 
+    #if DEBUG
     /// Homologação: auto-verifica o e-mail sem código (só funciona com MAILER!=resend).
+    /// Só DEBUG: o endpoint de desenvolvimento não pode existir num build da App Store.
     func devVerifyEmail() async throws -> OKResponse {
         return try await request(path: "/auth/dev/verify-email", method: "POST",
                                   body: Data("{}".utf8), as: OKResponse.self)
     }
+    #endif
 
     // MARK: Push devices
 

@@ -5,14 +5,9 @@
 //  Pipeline de push: pede permissão, registra no APNs, manda o device token
 //  para o backend e processa notificações entregues (foreground + background).
 //
-//  Endpoint backend esperado: POST /devices/register
-//      body: {"token": "<hex>", "platform": "ios"}
-//      auth: Bearer <jwt do usuário> (mesmo token de API)
-//
-//  Se o endpoint ainda não existir no backend, fazemos retry exponencial em
-//  background e falhamos silenciosamente — push continua chegando enquanto
-//  o backend não estiver pronto (uma vez registrado depois, novas mensagens
-//  passam a ser entregues).
+//  Redesenho "Embarque" (D12): a permissão só é pedida DEPOIS do login (`aposEntrar()`, chamado pela
+//  BXRaiz) e o registro no backend vai por `BXPushRegistro` (POST /push/devices/register com o token da
+//  sessão nova; o `sair()` da BXSessao remove o aparelho). Em modo demonstração nada é registrado.
 //
 
 import Foundation
@@ -62,33 +57,24 @@ final class PushService: NSObject {
         Task { await registerWithBackend(hex: hex, attempt: 1) }
     }
 
-    /// Manda o token ao backend. Faz retry com backoff em falhas transitórias
-    /// até `maxAttempts`. Falha silenciosa: o app não notifica o usuário se o
-    /// backend não estiver pronto — uma próxima sessão tenta de novo.
+    /// Manda o token ao backend pelo núcleo novo (`BXPushRegistro`, só com sessão logada).
+    /// Falha silenciosa com poucas novas tentativas: sem rede, a próxima abertura tenta de novo.
     private func registerWithBackend(hex: String, attempt: Int) async {
-        let maxAttempts = 5
+        let maxAttempts = 3
         lastRegisterAttempt = Date()
-        do {
-            try await BlaxxAPI.shared.registerDevice(token: hex)
-        } catch {
-            // 404/405 → backend ainda não tem o endpoint: abandona em silêncio.
-            if let apiErr = error as? APIError, apiErr.status == 404 || apiErr.status == 405 {
-                return
-            }
-            // Outros erros (timeout, 5xx, sem rede): retry em background.
-            if attempt < maxAttempts {
-                let delay = UInt64(pow(2.0, Double(attempt)) * 1_000_000_000) // 2,4,8,16s
-                try? await Task.sleep(nanoseconds: delay)
-                await registerWithBackend(hex: hex, attempt: attempt + 1)
-            }
+        await BXPushRegistro.registrar(token: hex)
+        if UserDefaults.standard.string(forKey: "bx_push_dispositivo_id") == nil, attempt < maxAttempts {
+            try? await Task.sleep(for: .seconds(pow(2.0, Double(attempt))))
+            await registerWithBackend(hex: hex, attempt: attempt + 1)
         }
     }
 
-    /// Reenvia o token (chamar após login bem-sucedido — backend precisa do
-    /// JWT para associar ao usuário). No-op se ainda não temos token APNs.
-    func rebindAfterLogin() {
-        guard let hex = Self.deviceTokenHex else { return }
-        Task { await registerWithBackend(hex: hex, attempt: 1) }
+    /// Depois do login (D12): pede permissão (o sistema só pergunta uma vez) e registra o aparelho.
+    /// Se o token do APNs já é conhecido, registra na hora. Não faz nada no modo demonstração.
+    func aposEntrar() async {
+        guard !BXDemo.ativo, !BXDemo.visitante else { return }
+        if let hex = Self.deviceTokenHex { await registerWithBackend(hex: hex, attempt: 1) }
+        await requestAuthorizationAndRegister()
     }
 }
 

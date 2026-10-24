@@ -2,18 +2,18 @@
 //  BlaxxPontosApp.swift
 //  BlaxxPontos
 //
+//  Redesenho "Embarque" (22/10/2026): a raiz é `ContentView` → `BXRaiz` (Rewards/Telas/Casca), que trata os
+//  deep links (`blaxxpontos://redefinir-senha?token=…`, `blaxxpontos://enviar?para=…`) e pede push só depois
+//  do login (D12). Nada de rede no lançamento além do que a sessão precisa.
+//
 
 import SwiftUI
 import SwiftData
 
 @main
 struct BlaxxPontosApp: App {
+    /// Sessão do app antigo: só o `legacyBody` (fora do iOS) usa. No iOS a sessão é `BXSessao`.
     @State private var session = Session()
-
-    // Token de recuperação recebido por deep link
-    // (`blaxxpontos://redefinir-senha?token=…`). Quando não-nil, ContentView
-    // apresenta a ResetPasswordView por cima de qualquer tela.
-    @State private var resetToken: String?
 
     // App delegate pra receber callbacks de APNs (deviceToken / didFail).
     #if os(iOS)
@@ -39,25 +39,9 @@ struct BlaxxPontosApp: App {
                 #if os(macOS)
                 .frame(minWidth: 1080, minHeight: 700)
                 #endif
-                .sheet(item: Binding(
-                    get: { resetToken.map { ResetTokenWrapper(token: $0) } },
-                    set: { resetToken = $0?.token }
-                )) { wrapper in
-                    ResetPasswordView(token: wrapper.token)
-                }
-                .onOpenURL { url in
-                    handleDeepLink(url)
-                }
-                #if os(iOS)
-                .task {
-                    // Pede permissão e registra para push. Idempotente — em
-                    // próximas execuções o sistema lembra a escolha do usuário.
-                    await PushService.shared.requestAuthorizationAndRegister()
-                }
-                #endif
                 // Cobre toda a árvore de views com overlay opaco quando o app
                 // sai de .active — protege o snapshot do App Switcher contra
-                // exposição de saldo, PIX, histórico financeiro etc.
+                // exposição de saldo, histórico e códigos.
                 #if os(iOS)
                 .protectedSnapshot()
                 #endif
@@ -68,25 +52,4 @@ struct BlaxxPontosApp: App {
         .windowToolbarStyle(.unified)
         #endif
     }
-
-    /// Trata deep links `blaxxpontos://redefinir-senha?token=…` (e o alias
-    /// `reset`). O backend envia o link web `…/redefinir-senha.html?token=…`;
-    /// para abrir no app nativo usamos o esquema custom registrado no Info.plist.
-    private func handleDeepLink(_ url: URL) {
-        guard let comps = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return }
-        let host = comps.host ?? ""
-        let path = comps.path
-        let isReset = host.contains("redefinir-senha") || host == "reset"
-            || path.contains("redefinir-senha") || path.contains("reset")
-        guard isReset,
-              let token = comps.queryItems?.first(where: { $0.name == "token" })?.value,
-              !token.isEmpty else { return }
-        resetToken = token
-    }
-}
-
-/// Wrapper Identifiable para usar o token com `.sheet(item:)`.
-private struct ResetTokenWrapper: Identifiable {
-    let token: String
-    var id: String { token }
 }

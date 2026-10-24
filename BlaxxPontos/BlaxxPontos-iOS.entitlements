@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!--
+	  Entitlements do app iOS (iPhone). O arquivo BlaxxPontos.entitlements continua valendo
+	  para o macOS (app-sandbox e afins são chaves de Mac e não entram no build iOS).
+
+	  aps-environment (push, D12): o PushService pede permissão e registra no APNs depois do
+	  login. "development" é o valor do arquivo; no Archive para a App Store/TestFlight o Xcode
+	  assina com "production" automaticamente. Com assinatura automática o Xcode liga a
+	  capability Push Notifications no App ID; o backend ainda precisa da chave APNs (.p8).
+
+	  Sign in with Apple (regra 4.8): quando o backend tiver POST /auth/apple, acrescentar
+	    <key>com.apple.developer.applesignin</key>
+	    <array><string>Default</string></array>
+	  e ligar BXRecursos.loginApple (ver docs/APP_STORE_PUBLICACAO.md).
+	-->
+	<key>aps-environment</key>
+	<string>development</string>
+</dict>
+</plist>
