@@ -442,7 +442,9 @@ struct BXRodapeRecibo: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 22) {
             BXWordmark(.logoCompleto, altura: 80)
-            Text("Um programa de recompensas simples: compre pontos, envie para quem quiser e troque por benefícios em parceiros selecionados. Sem letra miúda.")
+            Text(BXRecursos.compraNoApp
+                 ? "Um programa de recompensas simples: compre pontos, envie para quem quiser e troque por benefícios em parceiros selecionados. Sem letra miúda."
+                 : "Um programa de recompensas simples: receba e envie pontos entre contas BlaXx e troque por benefícios. Sem letra miúda.")
                 .bxFonte(.corpo)
                 .foregroundStyle(BXCor.tintaApagada)
                 .fixedSize(horizontal: false, vertical: true)
