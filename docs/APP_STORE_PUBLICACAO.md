@@ -98,6 +98,29 @@ Apple libere para a loja brasileira.
 ## 5. Passos que só você pode fazer
 
 ### 5.1 Apple Developer Program como empresa
+
+**Dados oficiais da empresa** (Receita Federal, conferidos em 24/10/2026). Use exatamente
+estes na D&B e na Apple: diferença de grafia entre o D-U-N-S e a inscrição trava a aprovação.
+
+| Campo | Valor |
+|---|---|
+| Razão social (Legal Entity Name) | BLAXX REWARDS LTDA |
+| Nome fantasia | Blaxx Pontos |
+| CNPJ | 68.260.588/0001-56 (matriz, situação ativa) |
+| Abertura | 28/07/2026 |
+| Natureza jurídica | Sociedade Empresária Limitada · Microempresa · Simples Nacional |
+| Endereço | Avenida Marquês de São Vicente, 405, Conj. 1804, Várzea da Barra Funda, São Paulo/SP, CEP 01139-001 |
+| Telefone | +55 11 92470-6095 |
+| E-mail / site | rveles@blaxxpontos.com.br · https://blaxxpontos.com.br |
+| CNAE principal | 63.11-9-00 (tratamento de dados, provedores de aplicação e hospedagem) |
+
+Na Receita o logradouro aparece abreviado ("Avenida Marq de Sao Vicente"). Se a D&B
+devolver o cadastro com essa grafia, use a mesma na Apple.
+
+O nome que aparece na loja como vendedor é a razão social (**BLAXX REWARDS LTDA**).
+Empresa aberta há menos de 3 meses costuma não ter D-U-N-S ainda: peça um novo na D&B
+(gratuito, prazo de até ~5 dias úteis, às vezes 14).
+
 1. Obter o **D-U-N-S** da BLAXX REWARDS LTDA (gratuito pela Dun & Bradstreet; consulta em
    developer.apple.com/enroll/duns-lookup). Pode levar alguns dias.
 2. Ter domínio e e-mail da empresa (ex.: rveles@blaxxpontos.com.br) e site público (blaxxpontos.com.br).
