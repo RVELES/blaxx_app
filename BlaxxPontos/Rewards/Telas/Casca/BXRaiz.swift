@@ -125,12 +125,16 @@ struct BXRaiz: View {
 }
 
 /// Abertura enquanto a sessão é lida do cofre: wordmark sobre tinta.
+/// Continua a tela de lançamento (Info.plist `UILaunchScreen`: cor BXAberturaFundo + BXAberturaMarca,
+/// 155 × 30 pt no centro da TELA), por isso o wordmark é centrado ignorando a área segura; centrado na
+/// área segura ele pulava ~14 pt para baixo na troca lançamento → abertura.
 private struct BXAbertura: View {
     var body: some View {
         ZStack {
-            BXCor.tinta.ignoresSafeArea()
+            BXCor.tinta
             BXWordmark(.barra, altura: 30)
         }
+        .ignoresSafeArea()
         .accessibilityElement()
         .accessibilityLabel("BlaXx Pontos, carregando")
     }

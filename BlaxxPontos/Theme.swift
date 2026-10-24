@@ -250,18 +250,18 @@ struct BrutalButtonStyle: ButtonStyle {
 
 // MARK: - Wordmark da marca (nativo, sem "Pontos")
 
-/// Wordmark "BlaXx" oficial — símbolo neon (blaxx_simbolo_color.svg) + texto duas cores.
-/// Paridade 1:1 com o BlaxxBrand do app web (símbolo SVG oficial + "BlaXx"); o símbolo
-/// neon vale para fundo claro e escuro, como na web.
-/// tone .dark → fundo claro (ink + #5AB800);  tone .light → fundo escuro (branco + #59FD27).
+/// Wordmark "BlaXx" oficial — símbolo B oficial (`BlaxxSymbol` = blaxx-simbolo-b.svg, vetor) + wordmark
+/// vetorial do design system (`BXWordmark`, cópia literal de blaxx/assets/marca/blaxx-wordmark-barra*.svg).
+/// Antes o "BlaXx" era montado com `Text("Bla") + Text("Xx")` (desenho da fonte, não da marca; "Xx"
+/// no verde legado #5AB800 sobre fundo claro) e o símbolo era um SVG de faixas de 1 px (serrilhado).
+/// tone .dark → fundo claro ("Bla" tinta + "Xx" neon com contorno tinta);
+/// tone .light → fundo escuro ("Bla" branco + "Xx" neon #59FD27).
+/// Usado só pelas telas legadas (macOS/visionOS); o iOS usa `BXWordmark` direto.
 struct BlaxxWordmark: View {
     enum Tone { case light, dark }
 
     var size: CGFloat = 28
     var tone: Tone = .dark
-
-    private var blaColor: Color { tone == .light ? .white : BlaxxColor.black }
-    private var xxColor: Color { tone == .light ? BlaxxColor.lime : BlaxxColor.limeDark }
 
     var body: some View {
         HStack(spacing: size * 0.30) {
@@ -270,30 +270,23 @@ struct BlaxxWordmark: View {
                 .scaledToFit()
                 .frame(height: size * 1.22)
                 .accessibilityHidden(true)
-            (Text("Bla").foregroundColor(blaColor)
-             + Text("Xx").foregroundColor(xxColor))
-                .font(BlaxxFont.display(size, weight: .black))
+            // 0,75 × size ≈ altura das maiúsculas do antigo texto no mesmo `size`.
+            BXWordmark(tone == .light ? .barra : .claro, altura: size * 0.75)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("BlaXx")
     }
 }
 
-/// Lockup vertical "BlaXx" — símbolo oficial EMPILHADO sobre o wordmark, como na
-/// web. Use em heros/topo, onde a versão horizontal fica pequena demais.
-/// O símbolo é neon: sobre fundo branco ele some, por isso o uso natural é
-/// tone .light (sobre fundo escuro), onde a marca salta.
-/// tone .light → fundo escuro (símbolo neon + "Bla" branco + "Xx" #59FD27).
-/// tone .dark  → fundo claro (símbolo neon + "Bla" ink + "Xx" #5AB800).
+/// Lockup vertical "BlaXx" — símbolo B oficial EMPILHADO sobre o wordmark vetorial, como na web.
+/// tone .light → fundo escuro ("Bla" branco + "Xx" neon #59FD27).
+/// tone .dark  → fundo claro ("Bla" tinta + "Xx" neon com contorno tinta).
 struct BlaxxLockup: View {
     enum Tone { case light, dark }
 
     var symbolSize: CGFloat = 52
     var fontSize: CGFloat = 22
     var tone: Tone = .light
-
-    private var blaColor: Color { tone == .light ? .white : BlaxxColor.black }
-    private var xxColor: Color { tone == .light ? BlaxxColor.lime : BlaxxColor.limeDark }
 
     var body: some View {
         VStack(spacing: symbolSize * 0.18) {
@@ -302,9 +295,7 @@ struct BlaxxLockup: View {
                 .scaledToFit()
                 .frame(height: symbolSize)
                 .accessibilityHidden(true)
-            (Text("Bla").foregroundColor(blaColor)
-             + Text("Xx").foregroundColor(xxColor))
-                .font(BlaxxFont.display(fontSize, weight: .black))
+            BXWordmark(tone == .light ? .barra : .claro, altura: fontSize * 0.75)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("BlaXx")

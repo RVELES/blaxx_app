@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="49 53 235 271.5" shape-rendering="geometricPrecision">
+<!-- Símbolo B da BlaXx, redesenhado em 16/10/2026 a partir do traçado
+     automático anterior (blaxx-simbolo-b.svg de agosto): hastes retas, cantos
+     concêntricos (traço de 39 unidades constante), corte diagonal a 45° exato.
+     Desvio médio de 0,3 unidade do original. Caixa justa ao B (sem respiro). -->
+  <path fill="#59FD27" fill-rule="evenodd" d="M51,55 H202.5 A69,69 0 0 1 271.5,124 V135 A69,69 0 0 1 251.76,183.32 A75,75 0 0 1 282,243.5 V247.5 A75,75 0 0 1 207,322.5 H51 Z M90,94 H202.5 A30,30 0 0 1 232.5,124 V135 A30,30 0 0 1 202.5,165 H104 L146.5,207.5 H207 A36,36 0 0 1 243,243.5 V247.5 A36,36 0 0 1 207,283.5 H90 V207.5 H124.5 L90,173 Z"/>
+</svg>

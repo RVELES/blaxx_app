@@ -12,6 +12,18 @@
 		<string>SpaceMono-Regular.ttf</string>
 		<string>SpaceMono-Bold.ttf</string>
 	</array>
+	<!-- Tela de lançamento (24/10/2026): fundo tinta #0A0B0E + wordmark oficial "BlaXx" (vetor, 155 × 30 pt),
+	     idêntica à BXAbertura que vem logo depois. Antes era a tela gerada vazia (branca), que piscava
+	     antes da abertura preta. -->
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>BXAberturaFundo</string>
+		<key>UIImageName</key>
+		<string>BXAberturaMarca</string>
+		<key>UIImageRespectsSafeAreaInsets</key>
+		<false/>
+	</dict>
 	<key>ATSApplicationFontsPath</key>
 	<string>.</string>
 	<key>NSAppTransportSecurity</key>

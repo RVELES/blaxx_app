@@ -12,9 +12,11 @@
 //  - arcos convertidos da parametrização de ponto final para centro (SVG 1.1, F.6.5)
 //    e aproximados por cúbicas de no máximo 90°;
 //  - atributos `fill` (none | currentColor | #RRGGBB), `stroke` (none | currentColor | #RRGGBB),
-//    `stroke-width`, `stroke-dasharray`, `fill-rule="evenodd"`.
+//    `stroke-width`, `stroke-dasharray`, `stroke-linejoin` (round | miter | bevel; padrão round, o dos
+//    ícones), `stroke-miterlimit`, `fill-rule="evenodd"`.
 //  Ordem de pintura: traço e depois preenchimento (é o `paint-order="stroke"` do wordmark claro;
-//  nenhum ícone tem os dois ao mesmo tempo).
+//  nenhum ícone tem os dois ao mesmo tempo). O contorno do "Xx" do wordmark claro é `miter`
+//  (cantos vivos do X redesenhado em 24/10/2026); desenhá-lo `round` arredondava as pontas.
 //
 
 import SwiftUI
@@ -33,6 +35,10 @@ nonisolated enum BXSVG {
         let larguraTraco: CGFloat?
         let tracejado: [CGFloat]?
         let parOuImpar: Bool
+        /// Junção do traço (`stroke-linejoin`); ícones sem o atributo usam `.round`.
+        var juncao: CGLineJoin = .round
+        /// `stroke-miterlimit` (SVG: padrão 4).
+        var limiteMiter: CGFloat = 4
 
         /// Atalho do contrato (§1.4): elemento só preenchido.
         var preenchido: Bool { preenchimento != nil && traco == nil }
@@ -77,12 +83,21 @@ nonisolated enum BXSVG {
 
             let largura = attrs["stroke-width"].flatMap { Double($0) }.map { CGFloat($0) }
             let tracejado = attrs["stroke-dasharray"].map { numeros($0) }
+            let juncao: CGLineJoin
+            switch attrs["stroke-linejoin"] {
+            case "miter": juncao = .miter
+            case "bevel": juncao = .bevel
+            default: juncao = .round
+            }
+            let limiteMiter = attrs["stroke-miterlimit"].flatMap { Double($0) }.map { CGFloat($0) } ?? 4
             saida.append(Elemento(path: p,
                                   preenchimento: preenchimento,
                                   traco: traco,
                                   larguraTraco: largura,
                                   tracejado: tracejado,
-                                  parOuImpar: attrs["fill-rule"] == "evenodd"))
+                                  parOuImpar: attrs["fill-rule"] == "evenodd",
+                                  juncao: juncao,
+                                  limiteMiter: limiteMiter))
         }
         return saida
     }
@@ -341,7 +356,8 @@ struct BXSVGVista: View {
                     let cor: Color
                     switch tr { case .corAtual: cor = corAtual; case .cor(let c): cor = c }
                     let largura = (e.larguraTraco ?? tracoPadrao) * escala
-                    let estilo = StrokeStyle(lineWidth: largura, lineCap: .round, lineJoin: .round,
+                    let estilo = StrokeStyle(lineWidth: largura, lineCap: .round, lineJoin: e.juncao,
+                                             miterLimit: e.limiteMiter,
                                              dash: (e.tracejado ?? []).map { $0 * escala })
                     ctx.stroke(p, with: .color(cor), style: estilo)
                     if preencherTracos && e.tracejado == nil {
