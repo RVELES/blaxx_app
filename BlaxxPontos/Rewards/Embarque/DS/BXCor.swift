@@ -61,15 +61,18 @@ nonisolated enum BXCor {
     static let neon            = Color(bxHex: 0x59FD27)
     /// Botão neon pressionado (hover do web).
     static let neonPressionado = Color(bxHex: 0x4FE81F)
-    /// Estado ativo do botão neon. Nunca texto.
-    static let neonProfundo    = Color(bxHex: 0x5AB800)
+    /// Verde escuro OFICIAL (26/10): texto/ícone verde sobre fundo claro (branco 6,63:1,
+    /// papel 5,87:1). O neon continua sendo a cor sobre preto e de preenchimento.
+    static let verdeEscuro     = Color(bxHex: 0x1F6B0B)
+    /// Alias legado (era #5AB800, 2,5:1 — reprovado). Prefira `verdeEscuro`.
+    static let neonProfundo    = verdeEscuro
     /// Fundo do chip "OLÁ, …".
     static let limaSuave       = Color(bxHex: 0xEEF7E2)
     /// Halo de foco dos campos.
     static let halo            = Color(bxHex: 0x59FD27, opacidade: 0.35)
 
     // MARK: status (fundo, texto)
-    static let okFundo = Color(bxHex: 0xE4F5DA),     okTexto = Color(bxHex: 0x1F6B14)
+    static let okFundo = Color(bxHex: 0xE4F5DA),     okTexto = Color(bxHex: 0x1F6B0B)
     static let avisoFundo = Color(bxHex: 0xF7EFD6),  avisoTexto = Color(bxHex: 0x7A5A00)
     static let perigoFundo = Color(bxHex: 0xF6DFD6), perigoTexto = Color(bxHex: 0x9A2F15)
     static let infoFundo = Color(bxHex: 0xDCE8F3),   infoTexto = Color(bxHex: 0x1B4A80)

@@ -20,7 +20,10 @@ enum BlaxxColor {
 
     // Verde neon Blaxx — verde OFICIAL da marca (acento institucional)
     static let lime        = Color(red: 0.349, green: 0.992, blue: 0.153)   // #59FD27
-    static let limeDark    = Color(red: 0.353, green: 0.722, blue: 0.000)   // #5AB800
+    /// Verde escuro OFICIAL (aprovado 26/10) para TEXTO/ÍCONE verde sobre fundo claro
+    /// (6,63:1 no branco, 5,87:1 no papel #F3F1EA). Substitui o legado #5AB800 (2,5:1).
+    static let verdeEscuro = Color(red: 0.122, green: 0.420, blue: 0.043)   // #1F6B0B
+    static let limeDark    = verdeEscuro                                    // alias legado → #1F6B0B
     static let limeLight   = Color(red: 0.941, green: 0.980, blue: 0.851)   // #F0FAD9
 
     // Cinzas — neutros quentes (substituem a rampa Zinc fria, tell de template)
@@ -35,7 +38,7 @@ enum BlaxxColor {
     // Semânticas
     static let negative    = Color(red: 0.863, green: 0.149, blue: 0.149)   // #DC2626
     static let warning     = Color(red: 0.961, green: 0.620, blue: 0.043)   // #F59E0B
-    static let positive    = Color(red: 0.086, green: 0.639, blue: 0.290)   // #16A34A (verde real)
+    static let positive    = verdeEscuro                                    // #1F6B0B (era #16A34A, 3,3:1 no branco)
 
     // Tema light — superfícies e bordas (neutros quentes)
     static let appBg       = Color(red: 0.957, green: 0.957, blue: 0.941)   // #F4F4F0
@@ -52,14 +55,14 @@ enum BlaxxColor {
     // Extraído de design/blaxx-area-logada-prototipo.html. A ideia: fundo "papel"
     // creme, superfícies brancas com borda preta GROSSA + sombra dura deslocada
     // (sem blur) e cantos quase retos. O neon (#59FD27) segue como acento; o verde
-    // do wordmark (#5AB800 / #F0FAD9) permanece intocado (regra da marca).
+    // do wordmark (#F0FAD9) permanece intocado; texto verde sobre claro = #1F6B0B (regra da marca).
     // Tokens novos e aditivos — nada aqui altera as cores já usadas em outras telas.
     static let paper       = Color(red: 0.910, green: 0.902, blue: 0.867)   // #E8E6DD  fundo papel
     static let ink         = Color(red: 0.039, green: 0.043, blue: 0.055)   // #0A0B0E  linha/texto brutal (preto oficial)
     static let brutalLine  = ink                                            // alias semântico p/ bordas
     static let paperLine   = Color(red: 0.847, green: 0.835, blue: 0.784)   // #D8D5C8  divisória sutil sobre papel
     static let brutalMuted = Color(red: 0.357, green: 0.376, blue: 0.345)   // #5B6058  microlabel/mono sobre papel
-    static let brutalPos   = Color(red: 0.122, green: 0.478, blue: 0.071)   // #1F7A12  valor positivo
+    static let brutalPos   = verdeEscuro                                    // #1F6B0B  valor positivo (era #1F7A12)
     static let brutalNeg   = Color(red: 0.659, green: 0.204, blue: 0.090)   // #A83417  valor negativo
 }
 
