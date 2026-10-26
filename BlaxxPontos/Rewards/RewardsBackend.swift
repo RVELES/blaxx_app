@@ -268,7 +268,8 @@ final class RewardsBackend {
     /// Homologação demo account (fictitious). Never a real credential.
     /// Disponível apenas em DEBUG — em release o login silencioso é desativado.
     static let demoEmail = "rewards.demo@blaxx.app"
-    static let demoPassword = "K7m#qP2vR9wL!"
+    // Fora do repositório: defina BLAXX_DEMO_PASSWORD nas variáveis de ambiente do esquema (só DEBUG).
+    static let demoPassword = ProcessInfo.processInfo.environment["BLAXX_DEMO_PASSWORD"] ?? ""
     #endif
 }
 
