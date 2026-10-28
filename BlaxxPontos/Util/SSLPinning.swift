@@ -47,17 +47,23 @@ import Foundation
 
 enum SSLPinning {
     /// Hashes SHA-256 (base64) das chaves públicas autorizadas.
-    /// MANTER 2+ entradas: leaf em uso + intermediário (backup).
+    /// MANTER 2+ entradas, todas da cadeia real do servidor.
     ///
-    /// Extraídos em 2026-06-29:
-    /// - [0] leaf: CN=onrender.com — rotaciona ~90 dias (curto prazo)
-    /// - [1] intermediate: Google Trust Services WE1 — estável (anos)
+    /// Atualizados em 2026-10-28 (o leaf de 06/29 já tinha rotacionado).
+    /// O leaf não é mais fixado: o Render o troca a cada ~90 dias. Fica o
+    /// intermediário em uso + as quatro raízes da Google Trust Services
+    /// (válidas até 2036), para sobreviver à troca de intermediário ou de
+    /// algoritmo (WE1 → WR1 etc.). A validação aceita qualquer certificado
+    /// da cadeia, então basta um bater.
     ///
-    /// Re-extraia o leaf antes de cada release; o intermediário é safe pin
-    /// de longo prazo (Onrender usa GTS desde 2024).
+    /// Extração: `openssl x509 -pubkey -noout | openssl pkey -pubin -outform der
+    /// | openssl dgst -sha256 -binary | base64` (SPKI completa).
     static let pinnedKeyHashes: [String] = [
-        "NnfKqDbhvUeabxD97xg7r9JvWoGY7BJjg8XThNJxVbk=",  // leaf onrender.com
-        "kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=",  // Google Trust Services WE1
+        "kIdp6NNEd8wsugYyyIYFsi1ylMCED3hZbSR8ZFsa/A4=",  // GTS WE1 (intermediário atual)
+        "hxqRlPTu1bMS/0DITB1SSu0vd4u/8l8TjPgfaAp63Gc=",  // GTS Root R1 (RSA 4096)
+        "Vfd95BwDeSQo+NUYxVEEIlvkOlWY2SalKK1lPhzOx78=",  // GTS Root R2 (RSA 4096)
+        "QXnt2YHvdHR3tJYmQIr0Paosp6t/nggsEGD4QJZ3Q0g=",  // GTS Root R3 (EC P-384)
+        "mEflZT5enoR1FuXLgYYGqnVEoZvmf9c2bVBpiOjYQ0c=",  // GTS Root R4 (EC P-384)
     ]
 
     /// Liga/desliga o pinning. Ativo em RELEASE; desligado em DEBUG pra
@@ -108,7 +114,7 @@ private final class PinningDelegate: NSObject, URLSessionDelegate {
         // porque a chave costuma sobreviver à renovação.
         let chain = SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
         for cert in chain {
-            if let hash = publicKeyHashSHA256(of: cert),
+            if let hash = PinningDelegate.spkiHashSHA256(of: cert),
                SSLPinning.pinnedKeyHashes.contains(hash) {
                 completionHandler(.useCredential, URLCredential(trust: trust))
                 return
@@ -120,14 +126,50 @@ private final class PinningDelegate: NSObject, URLSessionDelegate {
     }
 
     /// SHA-256(base64) da SubjectPublicKeyInfo do certificado.
-    private func publicKeyHashSHA256(of cert: SecCertificate) -> String? {
-        guard let key = SecCertificateCopyKey(cert) else { return nil }
+    ///
+    /// `SecKeyCopyExternalRepresentation` devolve a chave CRUA (ponto EC ou
+    /// PKCS#1 RSA), sem o cabeçalho ASN.1 da SPKI. Os pins acima vêm do
+    /// `openssl pkey -outform der`, que é a SPKI completa — sem recolocar o
+    /// cabeçalho o hash nunca bate e toda request em Release é cancelada
+    /// (foi o que impediu o login do revisor da Apple no build 6).
+    static func spkiHashSHA256(of cert: SecCertificate) -> String? {
+        guard let key = SecCertificateCopyKey(cert),
+              let attrs = SecKeyCopyAttributes(key) as? [CFString: Any],
+              let tipo = attrs[kSecAttrKeyType] as? String,
+              let bits = attrs[kSecAttrKeySizeInBits] as? Int else { return nil }
         var error: Unmanaged<CFError>?
-        guard let derKey = SecKeyCopyExternalRepresentation(key, &error) as Data? else { return nil }
-        return sha256Base64(of: derKey)
+        guard let raw = SecKeyCopyExternalRepresentation(key, &error) as Data?,
+              let cabecalho = spkiCabecalho(tipo: tipo, bits: bits) else { return nil }
+        return sha256Base64(of: cabecalho + raw)
     }
 
-    private func sha256Base64(of data: Data) -> String {
+    /// Prefixos ASN.1 da SPKI por tipo/tamanho de chave.
+    private static func spkiCabecalho(tipo: String, bits: Int) -> Data? {
+        let ec = kSecAttrKeyTypeECSECPrimeRandom as String
+        let rsa = kSecAttrKeyTypeRSA as String
+        let hex: String
+        if tipo == ec && bits == 256 {
+            hex = "3059301306072a8648ce3d020106082a8648ce3d030107034200"
+        } else if tipo == ec && bits == 384 {
+            hex = "3076301006072a8648ce3d020106052b81040022036200"
+        } else if tipo == rsa && bits == 2048 {
+            hex = "30820122300d06092a864886f70d01010105000382010f00"
+        } else if tipo == rsa && bits == 4096 {
+            hex = "30820222300d06092a864886f70d01010105000382020f00"
+        } else {
+            return nil
+        }
+        var d = Data()
+        var i = hex.startIndex
+        while i < hex.endIndex {
+            let j = hex.index(i, offsetBy: 2)
+            d.append(UInt8(hex[i..<j], radix: 16)!)
+            i = j
+        }
+        return d
+    }
+
+    private static func sha256Base64(of data: Data) -> String {
         // CommonCrypto via inline import; evita dependência externa.
         // Implementação simples — não dependemos de CryptoKit para manter
         // a compatibilidade com versões antigas.
