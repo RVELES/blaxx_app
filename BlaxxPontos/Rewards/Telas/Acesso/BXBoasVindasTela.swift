@@ -49,6 +49,10 @@ struct BXBoasVindasTela: View {
                     .padding(.horizontal, BXEspaco.margem)
                     .frame(maxWidth: BXEspaco.colunaMax)
                     .frame(maxWidth: .infinity)
+                    // O fundo dividido (chão em cima, tinta embaixo) fica fixo na tela e só
+                    // deve aparecer no repuxo da rolagem; sem este chão próprio, o conteúdo
+                    // que passava pela metade de baixo ficava tinta sobre tinta, ilegível.
+                    .background(BXCor.chao)
                     BXRodapeRecibo()
                         .id("rodape")
                 }
