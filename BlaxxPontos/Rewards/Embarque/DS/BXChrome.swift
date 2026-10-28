@@ -149,24 +149,24 @@ private struct BXBarraTopo: ViewModifier {
                     ToolbarItem(placement: .topBarLeading) {
                         BXWordmark(.barra, altura: 22)
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                 } else {
                     ToolbarItem(placement: .principal) {
                         BXWordmark(.barra, altura: 18)
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                 }
                 if logado {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: aoSino) { BXSino(naoLidas: naoLidas) }
                             .buttonStyle(BXEstiloPressao())
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: aoAvatar) { BXAvatar(inicial: inicial) }
                             .buttonStyle(BXEstiloPressao())
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                 } else {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: aoEntrar) {
@@ -176,7 +176,7 @@ private struct BXBarraTopo: ViewModifier {
                         }
                         .buttonStyle(BXEstiloPressao())
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: aoMenu) {
                             BXGlifo(.menu, cor: BXCor.papel, lado: 20)
@@ -186,7 +186,7 @@ private struct BXBarraTopo: ViewModifier {
                         .buttonStyle(BXEstiloPressao())
                         .accessibilityLabel("Menu")
                     }
-                    .sharedBackgroundVisibility(.hidden)
+                    .bxSemFundoCompartilhado()
                 }
             }
             .dynamicTypeSize(...DynamicTypeSize.xxLarge)
@@ -467,3 +467,20 @@ struct BXRodapeRecibo: View {
         .accessibilityElement(children: .contain)
     }
 }
+
+// MARK: - Compatibilidade iOS 18
+
+#if os(iOS)
+extension ToolbarContent {
+    /// `sharedBackgroundVisibility` só existe no iOS 26 (Liquid Glass); antes
+    /// dele a barra não desenha o fundo compartilhado, então não há o que esconder.
+    @ToolbarContentBuilder
+    func bxSemFundoCompartilhado() -> some ToolbarContent {
+        if #available(iOS 26.0, *) {
+            self.sharedBackgroundVisibility(.hidden)
+        } else {
+            self
+        }
+    }
+}
+#endif
