@@ -222,6 +222,7 @@ struct BXBoasVindasTela: View {
                     BXLegendaCor(BXCor.tinta, "Rede em expansão")
                 }
             }
+            BXGloboRede(cidades: BXPainelPartidasDados.cidades, selecionada: $cidade)
             BXTracejado(cor: BXCor.linha)
             BXQuadroPreto(linhas: BXPainelPartidasDados.cidades.map(\.linha), selecionada: $cidade) { l in
                 if let c = BXPainelPartidasDados.cidade(id: l?.id) {
