@@ -36,8 +36,15 @@ nonisolated enum BXEspaco {
     static let cartao: CGFloat = 18
     /// Gap de grade de cartões.
     static let grade: CGFloat = 12
-    /// Coluna central máxima em paisagem, iPad e visionOS.
-    static let colunaMax: CGFloat = 560
+    /// Coluna central máxima em paisagem, iPad e visionOS. No iPad a coluna
+    /// de 560 ocupava pouco mais da metade de um 13" em pé; 680 aproveita a
+    /// tela sem esticar as linhas de texto demais.
+    static let colunaMax: CGFloat = {
+        #if os(iOS)
+        if MainActor.assumeIsolated({ UIDevice.current.userInterfaceIdiom == .pad }) { return 680 }
+        #endif
+        return 560
+    }()
 }
 
 nonisolated enum BXToque {

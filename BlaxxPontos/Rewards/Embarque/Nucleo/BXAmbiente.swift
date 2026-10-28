@@ -24,7 +24,9 @@ nonisolated enum BXAmbiente {
 
     static var ehDebug: Bool {
         #if DEBUG
-        return true
+        // `-BXComoLoja`: no DEBUG, liga só o que a versão da App Store liga
+        // (sem compra no app, sem campanhas…). Usado para as capturas da loja.
+        return !ProcessInfo.processInfo.arguments.contains("-BXComoLoja")
         #else
         return false
         #endif

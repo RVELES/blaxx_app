@@ -460,6 +460,9 @@ struct BXRodapeRecibo: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        // Conteúdo alinhado à coluna das telas (iPad/paisagem); o fundo preto segue de ponta a ponta.
+        .frame(maxWidth: BXEspaco.colunaMax)
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, BXEspaco.margem)
         .padding(.top, 28)
         .padding(.bottom, 40)
