@@ -213,7 +213,8 @@ struct BXBoasVindasTela: View {
     private var painel: some View {
         BXPainel(rotulo: "Painel de partidas · Mapa", titulo: "Seus pontos, o mundo inteiro.") {
             VStack(alignment: .leading, spacing: 14) {
-                BXNumeroDestaque("\(BXPainelPartidasDados.cidades.count)", legenda: "cidades no mapa")
+                BXNumeroDestaque("\(BXPainelPartidasDados.cidades.count)", legenda: "cidades no mapa",
+                                 prefixo: "Expandindo para as")
                 FlowLegenda {
                     ForEach(BXPainelPartidasDados.verticaisPresentes, id: \.self) { v in
                         BXLegendaCor(v.cor, v.nome)

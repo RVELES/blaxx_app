@@ -43,22 +43,49 @@ struct BXPainel<Conteudo: View>: View {
 struct BXNumeroDestaque: View {
     let numero: String
     let legenda: String
+    /// Texto antes do número ("Expandindo para as"). Cabe na mesma linha quando
+    /// há largura; senão sobe para uma linha própria acima do número.
+    let prefixo: String?
 
-    init(_ numero: String, legenda: String) {
+    init(_ numero: String, legenda: String, prefixo: String? = nil) {
         self.numero = numero
         self.legenda = legenda
+        self.prefixo = prefixo
     }
 
     var body: some View {
-        HStack(alignment: .firstTextBaseline, spacing: 12) {
-            Text(numero)
-                .bxFonte(.numeroDestaque)
-                .foregroundStyle(BXCor.tinta)
-                .padding(.horizontal, 3.5)
-                .background(BXCor.neon, in: Rectangle())
-            Text(legenda).bxFonte(.corpo).foregroundStyle(BXCor.tinta)
+        Group {
+            if let prefixo {
+                ViewThatFits(in: .horizontal) {
+                    HStack(alignment: .firstTextBaseline, spacing: 12) {
+                        textoPrefixo(prefixo); numeroDestacado; textoLegenda
+                    }
+                    VStack(alignment: .leading, spacing: 6) {
+                        textoPrefixo(prefixo)
+                        HStack(alignment: .firstTextBaseline, spacing: 12) { numeroDestacado; textoLegenda }
+                    }
+                }
+            } else {
+                HStack(alignment: .firstTextBaseline, spacing: 12) { numeroDestacado; textoLegenda }
+            }
         }
         .accessibilityElement(children: .combine)
+    }
+
+    private var numeroDestacado: some View {
+        Text(numero)
+            .bxFonte(.numeroDestaque)
+            .foregroundStyle(BXCor.tinta)
+            .padding(.horizontal, 3.5)
+            .background(BXCor.neon, in: Rectangle())
+    }
+
+    private var textoLegenda: some View {
+        Text(legenda).bxFonte(.corpo).foregroundStyle(BXCor.tinta).fixedSize()
+    }
+
+    private func textoPrefixo(_ t: String) -> some View {
+        Text(t).bxFonte(.corpo).foregroundStyle(BXCor.tinta).fixedSize()
     }
 }
 
